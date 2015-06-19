@@ -4,9 +4,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * A handler object for containing coordinates and distance from another block.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class DistanceHandler implements Comparable<DistanceHandler>
 {

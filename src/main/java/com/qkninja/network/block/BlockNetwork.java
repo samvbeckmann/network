@@ -17,9 +17,10 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Generic block in the Network mod.
+ * implemented by all other Network blocks.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class BlockNetwork extends Block
 {

@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * Generic Item for Dilithium Transportation Mod
+ * Generic Item for Network Mod
  *
  * @author QKninja
  */

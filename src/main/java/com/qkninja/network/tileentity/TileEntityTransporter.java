@@ -9,42 +9,50 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Defines a Tile Entity of a transporter (nexus)
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class TileEntityTransporter extends TileEntityNetwork implements IInventory
 {
     private int counter;
     private ItemStack inventory;
-    private PriorityQueue<DistanceHandler> exportLocations = new PriorityQueue<DistanceHandler>();
-    private int mode;
+    private List<DistanceHandler> exportLocations = new ArrayList<DistanceHandler>();
 
     @Override
     public void updateEntity()
     {
         if (counter < ConfigValues.transportDelay) counter++;
 
-        switch (mode)
+        if (counter >= ConfigValues.transportDelay)
         {
-            case 1:
-                if (counter >= ConfigValues.transportDelay)
-                {
+            for (DistanceHandler d : exportLocations)
+            {
+                if (!validateBlock(d))
+                    exportLocations.remove(d);
+            }
+
+            switch (this.getBlockMetadata())
+            {
+                case 1:
                     if (inventory == null)
                     {
                         // TODO Grab item from inventory
                     }
+                    return;
+                case 2:
+                    if (inventory != null)
+                    {
+                        // TODO attempt place in inventory
+                    }
+                    return;
+            }
 
-                    attemptTeleport();
-                }
-                break;
-            case 2:
-
+            attemptTeleport();
         }
-
     }
 
     public boolean addDestination(World world, int x, int y, int z)
@@ -53,7 +61,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         {
             LogHelper.info("Blocks not linked, world error.");
             return false;
-        } else if (xCoord == x &&yCoord == y && zCoord == z)
+        } else if (xCoord == x && yCoord == y && zCoord == z)
         {
             LogHelper.info("Blocks not linked, same block.");
             return false;
@@ -94,7 +102,8 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private boolean attemptTeleport()
     {
-        for(DistanceHandler loc : exportLocations)
+        Collections.sort(exportLocations);
+        for (DistanceHandler loc : exportLocations)
         {
             TileEntity tile = worldObj.getTileEntity(loc.getX(), loc.getY(), loc.getZ());
             if (tile instanceof TileEntityTransporter) // Should always be true
@@ -180,7 +189,8 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this &&
                 entityPlayer.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D,
-                        (double) this.zCoord + 0.5D) <= 64.0D;    }
+                        (double) this.zCoord + 0.5D) <= 64.0D;
+    }
 
     public void openInventory()
     {

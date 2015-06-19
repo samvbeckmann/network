@@ -19,9 +19,9 @@ import net.minecraft.world.World;
 import java.util.List;
 
 /**
- * dilithium-transportation, class made on 6/16/2015.
+ * Defines the hyperspanner tool.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class ItemHyperspanner extends ItemNetwork
 {

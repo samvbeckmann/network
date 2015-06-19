@@ -10,9 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Defines the block of a transporter (nexus)
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class BlockTransporter extends BlockNetwork implements ITileEntityProvider
 {

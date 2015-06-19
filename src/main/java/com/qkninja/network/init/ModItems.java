@@ -8,9 +8,9 @@ import com.qkninja.network.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * Initializes all the items in the mod.
+ * Initializes all the items in the Network mod.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModItems

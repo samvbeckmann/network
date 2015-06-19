@@ -1,9 +1,9 @@
 package com.qkninja.network.reference;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Contains names of textures used in the Network mod.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class Textures
 {

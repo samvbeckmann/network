@@ -6,9 +6,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 /**
- * Defines the Creative tab for Dilithium Transportation
+ * Defines the Creative tab for Network mod.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class CreativeTabNetwork
 {

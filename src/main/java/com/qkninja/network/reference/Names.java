@@ -3,7 +3,7 @@ package com.qkninja.network.reference;
 /**
  * Reference class for all the String names in the mod.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public final class Names
 {

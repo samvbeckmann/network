@@ -1,9 +1,9 @@
 package com.qkninja.network.reference;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Values loaded from the configuration file are stored here
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class ConfigValues
 {

@@ -9,6 +9,6 @@ public class Recipes
 {
     public static void init()
     {
-
+        // TODO Core and Nexus recipes
     }
 }

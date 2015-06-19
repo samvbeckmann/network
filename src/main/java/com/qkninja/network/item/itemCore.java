@@ -3,9 +3,9 @@ package com.qkninja.network.item;
 import com.qkninja.network.reference.Names;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Defines the Core item.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class itemCore extends ItemNetwork
 {

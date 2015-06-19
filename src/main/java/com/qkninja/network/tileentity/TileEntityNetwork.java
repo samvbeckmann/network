@@ -5,9 +5,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * Generic tile entity for Network mod.
+ * Implemented by all tileEntities in the Network mod.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class TileEntityNetwork extends TileEntity
 {

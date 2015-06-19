@@ -1,9 +1,10 @@
 package com.qkninja.network.reference;
 
 /**
- * dilithium-transportation, class made on 6/18/2015.
+ * Contains strings to link to language file for
+ * messages displayed to the user.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public final class Messages
 {
@@ -13,6 +14,5 @@ public final class Messages
         public static final String HAS_DATA = "network.tooltips.hasdata";
         public static final String ONE_WAY = "network.tooltips.oneway";
         public static final String TWO_WAY = "network.tooltips.twoway";
-
     }
 }

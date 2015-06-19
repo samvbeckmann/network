@@ -8,9 +8,9 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 
 /**
- * dilithium-transportation, class made on 6/15/2015.
+ * A handler used to make the configuration file.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class ConfigurationHandler
 {
@@ -38,7 +38,7 @@ public class ConfigurationHandler
     private static void loadConfiguration()
     {
 
-
+        // TODO add support for configurations
         if (configuration.hasChanged())
         {
             configuration.save();

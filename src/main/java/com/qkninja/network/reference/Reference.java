@@ -1,9 +1,9 @@
 package com.qkninja.network.reference;
 
 /**
- * Contains basic information constants about the mod.
+ * Contains basic reference information constants about the mod.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class Reference
 {
