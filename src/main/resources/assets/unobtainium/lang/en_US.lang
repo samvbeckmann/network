@@ -1,0 +1,15 @@
+# Creative Tabs
+itemGroup.network=Network
+
+# Items
+item.network:core.name=Core
+item.network:hyperspanner.name=Hyperspanner
+
+# Blocks
+tile.network:transporter.name=Nexus
+
+# Tooltips
+network.tooltips.mode=Mode: %s
+network.tooltips.hasdata=<<Has Data>>
+network.tooltips.oneway=One-Way
+network.tooltips.twoway=Two-Way

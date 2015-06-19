@@ -1,0 +1,34 @@
+package com.qkninja.network.reference;
+
+/**
+ * Reference class for all the String names in the mod.
+ *
+ * @author Sam Beckmann
+ */
+public final class Names
+{
+    public static final class Items
+    {
+        public static final String CORE = "core";
+        public static final String HYPERSPANNER = "hyperspanner";
+    }
+
+    public static final class Blocks
+    {
+        public static final String TRANSPORTER = "transporter";
+    }
+
+    public static final class NBT
+    {
+        public static final String CUSTOM_NAME = "CustomName";
+        public static final String X_COORD = "xCoord";
+        public static final String Y_COORD = "yCoord";
+        public static final String Z_COORD = "zCoord";
+
+    }
+
+    public static final class TileEntities
+    {
+        public static final String TILE_TRANSPORTER = "tileTransporter";
+    }
+}

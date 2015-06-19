@@ -1,0 +1,17 @@
+[
+{
+  "modid": "DilithiumTransportation",
+  "name": "Dilithium Transportation",
+  "description": "Item movement, made simple.",
+  "version": "1.7.0-0.1",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [ "QKninja" ],
+  "credits": "Created by QKninja",
+  "logoFile": "",
+  "parent":"",
+  "screenshots": [],
+  "dependencies": []
+}
+]
