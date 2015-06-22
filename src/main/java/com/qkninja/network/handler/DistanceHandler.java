@@ -1,5 +1,7 @@
 package com.qkninja.network.handler;
 
+import com.qkninja.network.reference.Names;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -24,6 +26,14 @@ public class DistanceHandler implements Comparable<DistanceHandler>
     public DistanceHandler(TileEntity tile, int x, int y, int z)
     {
         this(tile, new ChunkCoordinates(x, y, z));
+    }
+
+    public DistanceHandler(int x, int y, int z, float distance)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.distance = distance;
     }
 
     public int getX()
@@ -64,5 +74,14 @@ public class DistanceHandler implements Comparable<DistanceHandler>
             return false;
         DistanceHandler other = (DistanceHandler) o;
         return x == other.x && y == other.y && z == other.z && distance == distance;
+    }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
+    {
+        tagCompound.setInteger(Names.NBT.X_COORD, x);
+        tagCompound.setInteger(Names.NBT.Y_COORD, y);
+        tagCompound.setInteger(Names.NBT.Z_COORD, z);
+        tagCompound.setFloat(Names.NBT.DISTANCE, distance);
+        return tagCompound;
     }
 }

@@ -4,8 +4,10 @@ import com.qkninja.network.init.ModBlocks;
 import com.qkninja.network.reference.Messages;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
+import com.qkninja.network.utility.LogHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +61,7 @@ public class ItemHyperspanner extends ItemNetwork
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
     {
-        if (entityPlayer.isSneaking())
+        if (entityPlayer.isSneaking() && !world.isRemote)
         {
             MovingObjectPosition movingObjectPosition = this.getMovingObjectPositionFromPlayer(world, entityPlayer, true);
 
@@ -71,7 +73,9 @@ public class ItemHyperspanner extends ItemNetwork
 
                 if (world.getBlock(i, j, k).equals(ModBlocks.transporter))
                 {
-                    // TODO Change transporter mode
+                    int newMetadata = (world.getBlockMetadata(i, j, k) + 1) % 3;
+                    world.setBlockMetadataWithNotify(i, j, k, newMetadata, 2);
+                    LogHelper.info("New Block Mode: " + (newMetadata == 0 ? "Neutral" : newMetadata == 1 ? "Import" : "Export"));
                     return itemStack;
                 }
             }

@@ -24,7 +24,9 @@ public final class Names
         public static final String X_COORD = "xCoord";
         public static final String Y_COORD = "yCoord";
         public static final String Z_COORD = "zCoord";
-
+        public static final String COUNTER = "counter";
+        public static final String DISTANCE = "distance";
+        public static final String LOCATIONS = "locations";
     }
 
     public static final class TileEntities
