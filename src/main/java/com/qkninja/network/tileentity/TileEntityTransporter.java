@@ -4,13 +4,20 @@ import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -37,10 +44,15 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             {
                 DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
                 tempLocs = exportLocations.toArray(tempLocs);
+
                 for (DistanceHandler d : tempLocs)
                 {
                     if (!validateBlock(d))
+                    {
                         exportLocations.remove(d);
+                        worldObj.markBlockForUpdate(xCoord, yCoord, xCoord);
+                        markDirty();
+                    }
                 }
 
                 switch (this.getBlockMetadata())
@@ -83,6 +95,13 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
                 attemptTeleport();
             }
+        } else if (worldObj.getTotalWorldTime() % 20 == 0)
+        {
+            DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
+            tempLocs = exportLocations.toArray(tempLocs);
+
+            if (tempLocs.length > 0)
+                spawnParticles(tempLocs);
         }
     }
 
@@ -109,11 +128,15 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                 {
                     exportLocations.remove(handler);
                     LogHelper.info("Block link removed.");
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    markDirty();
                     return true;
                 } else if (validateBlock(handler))
                 {
                     exportLocations.add(handler);
                     LogHelper.info("Blocks Linked successfully.");
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    markDirty();
                     return true;
                 } else
                 {
@@ -150,6 +173,29 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             }
         }
         return false;
+    }
+
+    private void spawnParticles(DistanceHandler[] locs)
+    {
+        for (DistanceHandler handler : locs)
+        {
+            double x = handler.getX() - xCoord;
+            double y = handler.getY() - yCoord;
+            double z = handler.getZ() - zCoord;
+            Vec3 vector = Vec3.createVectorHelper(x, y, z);
+            vector = vector.normalize();
+
+            worldObj.spawnParticle("happyVillager", xCoord + .5, yCoord + 1.5D, zCoord + .5D, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
+
+//            worldObj.spawnParticle(
+//                    "happyVillager",
+//                    xCoord + rand.nextFloat() * width * 2.0F - width,
+//                    yCoord + 0.5D + rand.nextFloat() * height,
+//                    zCoord + rand.nextFloat() * width * 2.0F - width,
+//                    motionX,
+//                    motionY,
+//                    motionZ);
+        }
     }
 
     public void resetCounter()
@@ -258,8 +304,38 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         counter = tag.getShort(Names.NBT.COUNTER);
         inventory = ItemStack.loadItemStackFromNBT(tag);
 
+        this.readSyncableData(tag);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag)
+    {
+        super.writeToNBT(tag);
+
+        tag.setShort(Names.NBT.COUNTER, (short) counter);
+        if (inventory != null) inventory.writeToNBT(tag);
+
+        writeSyncableData(tag);
+    }
+
+    private NBTTagCompound writeSyncableData(NBTTagCompound tag)
+    {
+        NBTTagList tagList = new NBTTagList();
+        for (DistanceHandler exportLocation : exportLocations)
+        {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            exportLocation.writeToNBT(tagCompound);
+            tagList.appendTag(tagCompound);
+        }
+        tag.setTag(Names.NBT.LOCATIONS, tagList);
+        return tag;
+    }
+
+    private void readSyncableData(NBTTagCompound tag)
+    {
+        exportLocations = new ArrayList<DistanceHandler>();
         NBTTagList tagList = tag.getTagList(Names.NBT.LOCATIONS, 10);
-        for(int i = 0; i < tagList.tagCount(); i++)
+        for (int i = 0; i < tagList.tagCount(); i++)
         {
             NBTTagCompound tagCompound = tagList.getCompoundTagAt(i);
             int x = tagCompound.getInteger(Names.NBT.X_COORD);
@@ -272,20 +348,16 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag)
+    public Packet getDescriptionPacket()
     {
-        super.writeToNBT(tag);
+        NBTTagCompound syncData = new NBTTagCompound();
+        writeSyncableData(syncData);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, syncData);
+    }
 
-        tag.setShort(Names.NBT.COUNTER, (short) counter);
-        if (inventory != null) inventory.writeToNBT(tag);
-
-        NBTTagList tagList = new NBTTagList();
-        for (DistanceHandler exportLocation : exportLocations)
-        {
-            NBTTagCompound tagCompound = new NBTTagCompound();
-            exportLocation.writeToNBT(tagCompound);
-            tagList.appendTag(tagCompound);
-        }
-        tag.setTag(Names.NBT.LOCATIONS, tagList);
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+        readSyncableData(pkt.func_148857_g());
     }
 }

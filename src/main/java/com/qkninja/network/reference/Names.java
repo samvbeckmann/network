@@ -33,4 +33,9 @@ public final class Names
     {
         public static final String TILE_TRANSPORTER = "tileTransporter";
     }
+
+    public class Channels
+    {
+        public static final String DESCRIPTION_CHANNEL = "Description";
+    }
 }

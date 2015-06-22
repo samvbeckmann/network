@@ -126,12 +126,18 @@ public class ItemHyperspanner extends ItemNetwork
 
             TileEntityTransporter te = (TileEntityTransporter) world.getTileEntity(storedX, storedY, storedZ);
             if (te != null)
-                te.addDestination(world, x, y, z);
+            {
+                if (te.addDestination(world, x, y, z))
+                {
+//                    world.markBlockForUpdate(x, y, z);
+                }
+            }
 
             if (itemStack.getItemDamage() >= 2)
             {
                 TileEntityTransporter otherTE = (TileEntityTransporter) world.getTileEntity(x, y, z);
-                otherTE.addDestination(world, storedX, storedY, storedZ);
+                if (otherTE.addDestination(world, storedX, storedY, storedZ));
+//                    world.markBlockForUpdate(storedX, storedY, storedZ);
             }
 
             itemStack.setItemDamage(itemStack.getItemDamage() - 1);
