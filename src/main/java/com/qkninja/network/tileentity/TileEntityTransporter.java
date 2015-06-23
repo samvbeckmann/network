@@ -4,9 +4,6 @@ import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -36,24 +33,30 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     @Override
     public void updateEntity()
     {
+        if (counter < ConfigValues.transportDelay) counter++;
+
+        if (counter >= ConfigValues.transportDelay)
+        {
+            DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
+            tempLocs = exportLocations.toArray(tempLocs);
+
+            for (DistanceHandler d : tempLocs)
+            {
+                if (!validateBlock(d))
+                {
+                    exportLocations.remove(d);
+                    worldObj.markBlockForUpdate(xCoord, yCoord, xCoord);
+                    markDirty();
+                }
+            }
+        }
+
         if (!worldObj.isRemote)
         {
-            if (counter < ConfigValues.transportDelay) counter++;
 
             if (counter >= ConfigValues.transportDelay)
             {
-                DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
-                tempLocs = exportLocations.toArray(tempLocs);
 
-                for (DistanceHandler d : tempLocs)
-                {
-                    if (!validateBlock(d))
-                    {
-                        exportLocations.remove(d);
-                        worldObj.markBlockForUpdate(xCoord, yCoord, xCoord);
-                        markDirty();
-                    }
-                }
 
                 switch (this.getBlockMetadata())
                 {
@@ -184,17 +187,9 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             double z = handler.getZ() - zCoord;
             Vec3 vector = Vec3.createVectorHelper(x, y, z);
             vector = vector.normalize();
+            float scale = worldObj.rand.nextFloat();
 
-            worldObj.spawnParticle("happyVillager", xCoord + .5, yCoord + 1.5D, zCoord + .5D, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
-
-//            worldObj.spawnParticle(
-//                    "happyVillager",
-//                    xCoord + rand.nextFloat() * width * 2.0F - width,
-//                    yCoord + 0.5D + rand.nextFloat() * height,
-//                    zCoord + rand.nextFloat() * width * 2.0F - width,
-//                    motionX,
-//                    motionY,
-//                    motionZ);
+            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
         }
     }
 
@@ -288,6 +283,11 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     public void closeInventory()
     {
         // NOOP
+    }
+
+    public List<DistanceHandler> getExportLocations()
+    {
+        return exportLocations;
     }
 
     @Override

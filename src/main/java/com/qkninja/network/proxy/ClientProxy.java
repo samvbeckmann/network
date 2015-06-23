@@ -1,7 +1,10 @@
 package com.qkninja.network.proxy;
 
+import com.qkninja.network.client.renderer.LineRenderer;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * Contains methods for client-side proxy operations.
@@ -13,7 +16,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void preInit()
     {
-        // NOOP
+        registerRenderers();
     }
 
     @Override
@@ -32,5 +35,10 @@ public class ClientProxy extends CommonProxy
     public EntityPlayer getClientPlayer()
     {
         return Minecraft.getMinecraft().thePlayer;
+    }
+
+    private void registerRenderers()
+    {
+        MinecraftForge.EVENT_BUS.register(new LineRenderer(Minecraft.getMinecraft()));
     }
 }
