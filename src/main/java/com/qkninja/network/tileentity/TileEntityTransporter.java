@@ -1,9 +1,12 @@
 package com.qkninja.network.tileentity;
 
+import com.qkninja.network.client.particle.EntityBlueSmokeFX;
 import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -189,7 +192,13 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             vector = vector.normalize();
             float scale = worldObj.rand.nextFloat();
 
-            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
+//            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
+            EntityFX blueSmoke = new EntityBlueSmokeFX(worldObj,
+                    xCoord + 0.5D + scale * x,
+                    yCoord + 0.5D + scale * y,
+                    zCoord + 0.5D + scale * z,
+                    0, 0, 0);
+            Minecraft.getMinecraft().effectRenderer.addEffect(blueSmoke);
         }
     }
 

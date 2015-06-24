@@ -38,4 +38,13 @@ public final class Names
     {
         public static final String DESCRIPTION_CHANNEL = "Description";
     }
+
+    public class Models
+    {
+        private static final String MODEL_PREFIX = "textures/models/";
+
+        public static final String TRANSPORTER = MODEL_PREFIX + "transporter";
+
+        public static final String MODEL_SUFFIX = ".png";
+    }
 }

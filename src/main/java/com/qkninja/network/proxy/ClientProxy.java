@@ -1,6 +1,8 @@
 package com.qkninja.network.proxy;
 
 import com.qkninja.network.client.renderer.LineRenderer;
+import com.qkninja.network.client.renderer.TransporterRenderer;
+import com.qkninja.network.tileentity.TileEntityTransporter;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,5 +42,7 @@ public class ClientProxy extends CommonProxy
     private void registerRenderers()
     {
         MinecraftForge.EVENT_BUS.register(new LineRenderer(Minecraft.getMinecraft()));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTransporter.class, new TransporterRenderer());
     }
 }
