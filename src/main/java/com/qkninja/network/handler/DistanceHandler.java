@@ -61,11 +61,11 @@ public class DistanceHandler implements Comparable<DistanceHandler>
     public int compareTo(DistanceHandler object)
     {
         if (object.distance > this.distance)
-            return 1;
+            return -1;
         else if (object.distance == this.distance)
             return 0;
         else
-            return -1;
+            return 1;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     {
         super();
         setBlockName(Names.Blocks.TRANSPORTER);
+        this.setLightLevel(10F);
     }
 
     @Override

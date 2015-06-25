@@ -19,6 +19,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
@@ -67,7 +68,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                     case IMPORT:
                         if (inventory == null)
                         {
-                            TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord); // TODO make sided aware
+                            TileEntity tile = getTileEntityFromMetadata();
                             if (tile != null && tile instanceof IInventory)
                             {
                                 IInventory inv = (IInventory) tile;
@@ -85,7 +86,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                     case EXPORT:
                         if (inventory != null)
                         {
-                            TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord); // TODO make sided aware
+                            TileEntity tile = getTileEntityFromMetadata();
                             if (tile != null && tile instanceof IInventory)
                             {
                                 IInventory inv = (IInventory) tile;
@@ -100,7 +101,8 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                         break;
                 }
 
-                attemptTeleport();
+                if (inventory != null)
+                    attemptTeleport();
             }
         } else if (worldObj.getTotalWorldTime() % 20 == 0)
         {
@@ -163,7 +165,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private boolean attemptTeleport()
     {
-        Collections.sort(exportLocations);
+        Collections.sort(exportLocations); // TODO Not working?
         for (DistanceHandler loc : exportLocations)
         {
             TileEntity tile = worldObj.getTileEntity(loc.getX(), loc.getY(), loc.getZ());
@@ -175,6 +177,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                     transporter.setInventorySlotContents(1, this.inventory);
                     this.decrStackSize(1, 1);
                     transporter.resetCounter();
+                    resetCounter();
                     return true;
                 }
             }
@@ -225,6 +228,27 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
         return mode;
+    }
+
+    private TileEntity getTileEntityFromMetadata()
+    {
+        ForgeDirection direction = ForgeDirection.getOrientation(blockMetadata);
+        switch (direction)
+        {
+            case DOWN:
+                return worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+            case WEST:
+                return worldObj.getTileEntity(xCoord + 1, yCoord, zCoord);
+            case EAST:
+                return worldObj.getTileEntity(xCoord - 1, yCoord, zCoord);
+            case NORTH:
+                return worldObj.getTileEntity(xCoord, yCoord, zCoord + 1);
+            case SOUTH:
+                return worldObj.getTileEntity(xCoord, yCoord, zCoord - 1);
+            case UP:
+            default:
+                return worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        }
     }
 
     public TransporterMode getMode()
