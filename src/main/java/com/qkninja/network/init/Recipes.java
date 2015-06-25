@@ -30,7 +30,7 @@ public class Recipes
                 break;
             case 1:
                 GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.core),
-                        " i ", "idi", " i",
+                        " i ", "idi", " i ",
                         'i', new ItemStack(Blocks.iron_bars),
                         'd', "gemDiamond"));
                 GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.transporter),
