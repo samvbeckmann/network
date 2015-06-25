@@ -5,6 +5,7 @@ import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
+import com.qkninja.network.utility.TransporterMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +18,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -32,6 +32,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     private int counter;
     private ItemStack inventory;
     private List<DistanceHandler> exportLocations = new ArrayList<DistanceHandler>();
+    private TransporterMode mode = TransporterMode.NEUTRAL;
 
     @Override
     public void updateEntity()
@@ -61,9 +62,9 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             {
 
 
-                switch (this.getBlockMetadata())
+                switch (mode)
                 {
-                    case 1:
+                    case IMPORT:
                         if (inventory == null)
                         {
                             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord); // TODO make sided aware
@@ -81,7 +82,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                             }
                         }
                         break;
-                    case 2:
+                    case EXPORT:
                         if (inventory != null)
                         {
                             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord); // TODO make sided aware
@@ -188,8 +189,8 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             double x = handler.getX() - xCoord;
             double y = handler.getY() - yCoord;
             double z = handler.getZ() - zCoord;
-            Vec3 vector = Vec3.createVectorHelper(x, y, z);
-            vector = vector.normalize();
+//            Vec3 vector = Vec3.createVectorHelper(x, y, z);
+//            vector = vector.normalize();
             float scale = worldObj.rand.nextFloat();
 
 //            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
@@ -205,6 +206,37 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     public void resetCounter()
     {
         counter = 0;
+    }
+
+    public TransporterMode incrementMode()
+    {
+        switch (mode)
+        {
+            case NEUTRAL:
+                mode = TransporterMode.IMPORT;
+                break;
+            case IMPORT:
+                mode = TransporterMode.EXPORT;
+                break;
+            case EXPORT:
+                mode = TransporterMode.NEUTRAL;
+                break;
+        }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
+        return mode;
+    }
+
+    public TransporterMode getMode()
+    {
+        return mode;
+    }
+
+    public void setMode(TransporterMode mode)
+    {
+        this.mode = mode;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
     }
 
     @Override
@@ -329,6 +361,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private NBTTagCompound writeSyncableData(NBTTagCompound tag)
     {
+        tag.setByte(Names.NBT.MODE, (byte) mode.ordinal());
         NBTTagList tagList = new NBTTagList();
         for (DistanceHandler exportLocation : exportLocations)
         {
@@ -342,6 +375,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private void readSyncableData(NBTTagCompound tag)
     {
+        mode = TransporterMode.values()[tag.getByte(Names.NBT.MODE)];
         exportLocations = new ArrayList<DistanceHandler>();
         NBTTagList tagList = tag.getTagList(Names.NBT.LOCATIONS, 10);
         for (int i = 0; i < tagList.tagCount(); i++)

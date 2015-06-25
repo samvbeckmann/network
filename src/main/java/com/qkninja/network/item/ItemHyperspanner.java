@@ -5,6 +5,7 @@ import com.qkninja.network.reference.Messages;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.LogHelper;
+import com.qkninja.network.utility.TransporterMode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -13,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -73,9 +75,13 @@ public class ItemHyperspanner extends ItemNetwork
 
                 if (world.getBlock(i, j, k).equals(ModBlocks.transporter))
                 {
-                    int newMetadata = (world.getBlockMetadata(i, j, k) + 1) % 3;
-                    world.setBlockMetadataWithNotify(i, j, k, newMetadata, 2);
-                    LogHelper.info("New Block Mode: " + (newMetadata == 0 ? "Neutral" : newMetadata == 1 ? "Import" : "Export"));
+                    TileEntity tileEntity = world.getTileEntity(i, j, k);
+                    if (tileEntity != null && tileEntity instanceof TileEntityTransporter)
+                    {
+                        TileEntityTransporter te = (TileEntityTransporter) tileEntity;
+                        TransporterMode mode = te.incrementMode();
+                        LogHelper.info("New Block Mode: " + mode);
+                    }
                     return itemStack;
                 }
             }

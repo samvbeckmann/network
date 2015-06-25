@@ -27,6 +27,7 @@ public final class Names
         public static final String COUNTER = "counter";
         public static final String DISTANCE = "distance";
         public static final String LOCATIONS = "locations";
+        public static final String MODE = "mode";
     }
 
     public static final class TileEntities
