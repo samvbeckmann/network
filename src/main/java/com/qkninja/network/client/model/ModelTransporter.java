@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
  * transporter - QKninja
  * Created using Tabula 4.1.1
  */
-public class TransporterModel extends ModelBase {
+public class ModelTransporter extends ModelBase {
     public ModelRenderer shape6;
     public ModelRenderer shape7;
     public ModelRenderer shape8;
@@ -21,7 +21,7 @@ public class TransporterModel extends ModelBase {
     public ModelRenderer Lowermid;
     public ModelRenderer Bottom;
 
-    public TransporterModel() {
+    public ModelTransporter() {
         this.textureWidth = 46;
         this.textureHeight = 11;
         this.shape8_1 = new ModelRenderer(this, 12, 0);
@@ -69,7 +69,7 @@ public class TransporterModel extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.shape8_1.render(f5);
         this.Lowermid.render(f5);
         this.Top.render(f5);
