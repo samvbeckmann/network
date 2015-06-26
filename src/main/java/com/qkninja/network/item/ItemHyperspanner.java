@@ -1,6 +1,7 @@
 package com.qkninja.network.item;
 
 import com.qkninja.network.init.ModBlocks;
+import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Messages;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
@@ -80,7 +81,7 @@ public class ItemHyperspanner extends ItemNetwork
                     {
                         TileEntityTransporter te = (TileEntityTransporter) tileEntity;
                         TransporterMode mode = te.incrementMode();
-                        LogHelper.info("New Block Mode: " + mode);
+                        if (ConfigValues.debugMode) LogHelper.info("New Block Mode: " + mode);
                     }
                     return itemStack;
                 }

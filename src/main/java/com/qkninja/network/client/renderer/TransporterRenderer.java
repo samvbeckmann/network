@@ -1,6 +1,6 @@
 package com.qkninja.network.client.renderer;
 
-import com.qkninja.network.client.model.TransporterModel;
+import com.qkninja.network.client.model.ModelTransporter;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
@@ -19,11 +19,11 @@ import org.lwjgl.opengl.GL11;
  */
 public class TransporterRenderer extends TileEntitySpecialRenderer
 {
-    private final TransporterModel model;
+    private final ModelTransporter model;
 
     public TransporterRenderer()
     {
-        this.model = new TransporterModel();
+        this.model = new ModelTransporter();
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale)

@@ -117,38 +117,38 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     {
         if (world != worldObj)
         {
-            LogHelper.info("Blocks not linked, world error.");
+            if (ConfigValues.debugMode) LogHelper.info("Blocks not linked, world error.");
             return false;
         } else if (xCoord == x && yCoord == y && zCoord == z)
         {
-            LogHelper.info("Blocks not linked, same block.");
+            if (ConfigValues.debugMode) LogHelper.info("Blocks not linked, same block.");
             return false;
         }
         {
             DistanceHandler handler = new DistanceHandler(this, x, y, z);
             if (handler.getDistance() > ConfigValues.maxDistanceSq)
             {
-                LogHelper.info("Blocks not linked, too far away.");
+                if (ConfigValues.debugMode) LogHelper.info("Blocks not linked, too far away.");
                 return false;
             } else
             {
                 if (exportLocations.contains(handler))
                 {
                     exportLocations.remove(handler);
-                    LogHelper.info("Block link removed.");
+                    if (ConfigValues.debugMode) LogHelper.info("Block link removed.");
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     markDirty();
                     return true;
                 } else if (validateBlock(handler))
                 {
                     exportLocations.add(handler);
-                    LogHelper.info("Blocks Linked successfully.");
+                    if (ConfigValues.debugMode) LogHelper.info("Blocks Linked successfully.");
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     markDirty();
                     return true;
                 } else
                 {
-                    LogHelper.info("Blocks not linked, not Transporter");
+                    if (ConfigValues.debugMode) LogHelper.info("Blocks not linked, not Transporter");
                     return false;
                 }
             }
@@ -164,7 +164,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private boolean attemptTeleport()
     {
-        Collections.sort(exportLocations); // TODO Not working?
+        Collections.sort(exportLocations);
         for (DistanceHandler loc : exportLocations)
         {
             TileEntity tile = worldObj.getTileEntity(loc.getX(), loc.getY(), loc.getZ());
@@ -186,7 +186,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private void spawnParticles(DistanceHandler[] locs)
     {
-//        for (DistanceHandler handler : locs)
+//        for (DistanceHandler handler : locs) // TODO Fix particle spawning
 //        {
 //            double x = handler.getX() - xCoord;
 //            double y = handler.getY() - yCoord;
