@@ -1,6 +1,5 @@
 package com.qkninja.network.tileentity;
 
-import com.qkninja.network.client.particle.EntityBlueSmokeFX;
 import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
@@ -187,23 +186,23 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
 
     private void spawnParticles(DistanceHandler[] locs)
     {
-        for (DistanceHandler handler : locs)
-        {
-            double x = handler.getX() - xCoord;
-            double y = handler.getY() - yCoord;
-            double z = handler.getZ() - zCoord;
-//            Vec3 vector = Vec3.createVectorHelper(x, y, z);
-//            vector = vector.normalize();
-            float scale = worldObj.rand.nextFloat();
-
-//            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
-            EntityFX blueSmoke = new EntityBlueSmokeFX(worldObj,
-                    xCoord + 0.5D + scale * x,
-                    yCoord + 0.5D + scale * y,
-                    zCoord + 0.5D + scale * z,
-                    0, 0, 0);
-            Minecraft.getMinecraft().effectRenderer.addEffect(blueSmoke);
-        }
+//        for (DistanceHandler handler : locs)
+//        {
+//            double x = handler.getX() - xCoord;
+//            double y = handler.getY() - yCoord;
+//            double z = handler.getZ() - zCoord;
+////            Vec3 vector = Vec3.createVectorHelper(x, y, z);
+////            vector = vector.normalize();
+//            float scale = worldObj.rand.nextFloat();
+//
+////            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
+//            EntityFX blueSmoke = new EntityBlueSmokeFX(worldObj,
+//                    xCoord + 0.5D + scale * x,
+//                    yCoord + 0.5D + scale * y,
+//                    zCoord + 0.5D + scale * z,
+//                    0, 0, 0);
+//            Minecraft.getMinecraft().effectRenderer.addEffect(blueSmoke);
+//        }
     }
 
     public void resetCounter()
