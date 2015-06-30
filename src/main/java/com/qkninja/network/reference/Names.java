@@ -35,12 +35,12 @@ public final class Names
         public static final String TILE_TRANSPORTER = "tileTransporter";
     }
 
-    public class Channels
+    public static final class Channels
     {
         public static final String DESCRIPTION_CHANNEL = "Description";
     }
 
-    public class Models
+    public static final class Models
     {
         private static final String MODEL_PREFIX = "textures/models/";
 

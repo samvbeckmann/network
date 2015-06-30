@@ -8,12 +8,16 @@ package com.qkninja.network.reference;
  */
 public final class Messages
 {
+    private static final String BASE_PREFIX = "network.";
+
     public static final class Tooltips
     {
-        public static final String MODE = "network.tooltips.mode";
-        public static final String HAS_DATA = "network.tooltips.hasdata";
-        public static final String ONE_WAY = "network.tooltips.oneway";
-        public static final String TWO_WAY = "network.tooltips.twoway";
+        private static final String PREFIX = BASE_PREFIX + "tooltips.";
+
+        public static final String MODE = PREFIX + "mode";
+        public static final String HAS_DATA = PREFIX + "hasdata";
+        public static final String ONE_WAY = PREFIX + "oneway";
+        public static final String TWO_WAY = PREFIX + "twoway";
     }
 
     public static final class Configuration
@@ -26,5 +30,20 @@ public final class Messages
 
         public static final String MAX_DISTANCE_SQUARED = "maxDistanceSquared";
         public static final String MAX_DISTANCE_DESCRIPTION = "The maximum distance, squared, connections between nexuses can be made";
+    }
+
+    public static final class Waila
+    {
+        private static final String PREFIX = BASE_PREFIX + "waila.";
+
+        public static final String WAILA_MODE = PREFIX + "mode";
+        public static final String WAILA_INVENTORY = PREFIX + "inventory";
+    }
+
+    public static final class Strings
+    {
+        public static final String MODE_NEUTRAL = BASE_PREFIX + "mode_neutral";
+        public static final String MODE_IMPORT = BASE_PREFIX + "mode_import";
+        public static final String MODE_EXPORT = BASE_PREFIX + "mode_export";
     }
 }

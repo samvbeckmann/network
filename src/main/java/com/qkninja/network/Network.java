@@ -5,7 +5,9 @@ import com.qkninja.network.init.ModBlocks;
 import com.qkninja.network.init.ModItems;
 import com.qkninja.network.init.Recipes;
 import com.qkninja.network.proxy.CommonProxy;
+import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Reference;
+import com.qkninja.network.utility.LogHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -40,6 +42,11 @@ public class Network
         ModItems.init();
 
         ModBlocks.init();
+
+        FMLInterModComms.sendMessage("Waila", "register", "com.qkninja.network.thirdparty.waila.Waila.onWailaCall");
+
+        LogHelper.info("Pre Initialization Complete!");
+
     }
 
     @Mod.EventHandler
@@ -49,14 +56,16 @@ public class Network
 
         Recipes.init();
 
-//        FMLCommonHandler.instance().bus().register(new KeyInputEventHandler()); // For keybindings
-//        Recipes.init();
+        LogHelper.info("Initialization Complete!");
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
         proxy.postInit();
+
+        LogHelper.info("Post Initialization Complete!");
+
     }
 
     @Mod.EventHandler
