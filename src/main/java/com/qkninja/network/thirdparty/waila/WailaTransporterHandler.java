@@ -34,8 +34,6 @@ public class WailaTransporterHandler implements IWailaDataProvider
 
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
     {
-        TileEntityTransporter te = (TileEntityTransporter) accessor.getTileEntity();
-
         currenttip.add(I18n.format(Messages.Waila.WAILA_MODE, I18n.format(accessor.getNBTData().getString(MODE))));
 
         if (!accessor.getNBTData().getString(INVENTORY).equals(""))

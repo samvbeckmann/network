@@ -11,4 +11,5 @@ public class ConfigValues
     public static int maxDistanceSq = 256;
     public static int difficulty = 1;
     public static boolean debugMode = false;
+    public static int sparkSpeedFactor = 10;
 }

@@ -5,7 +5,6 @@ import com.qkninja.network.init.ModBlocks;
 import com.qkninja.network.init.ModItems;
 import com.qkninja.network.init.Recipes;
 import com.qkninja.network.proxy.CommonProxy;
-import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Reference;
 import com.qkninja.network.utility.LogHelper;
 import cpw.mods.fml.common.FMLCommonHandler;

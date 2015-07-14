@@ -1,5 +1,6 @@
 package com.qkninja.network.tileentity;
 
+import com.qkninja.network.client.particle.EntityFXSpark;
 import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
@@ -17,6 +18,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -184,25 +186,31 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         return false;
     }
 
+    /**
+     * Spawns a particle to travel along the paths of all active connections.
+     *
+     * @param locs array of locations to send particles to
+     */
     private void spawnParticles(DistanceHandler[] locs)
     {
-//        for (DistanceHandler handler : locs) // TODO Fix particle spawning
-//        {
-//            double x = handler.getX() - xCoord;
-//            double y = handler.getY() - yCoord;
-//            double z = handler.getZ() - zCoord;
-////            Vec3 vector = Vec3.createVectorHelper(x, y, z);
-////            vector = vector.normalize();
-//            float scale = worldObj.rand.nextFloat();
-//
-////            worldObj.spawnParticle("mobSpellAmbient", xCoord + .5 + scale * x, yCoord + 0.5D + scale * y, zCoord + .5D + scale * z, vector.xCoord * .02D, vector.yCoord * .02D, vector.zCoord * .02D);
-//            EntityFX blueSmoke = new EntityBlueSmokeFX(worldObj,
-//                    xCoord + 0.5D + scale * x,
-//                    yCoord + 0.5D + scale * y,
-//                    zCoord + 0.5D + scale * z,
-//                    0, 0, 0);
-//            Minecraft.getMinecraft().effectRenderer.addEffect(blueSmoke);
-//        }
+        for (DistanceHandler handler : locs)
+        {
+            double x = handler.getX() - xCoord;
+            double y = handler.getY() - yCoord;
+            double z = handler.getZ() - zCoord;
+            Vec3 vector = Vec3.createVectorHelper(x, y, z);
+            double distance = vector.lengthVector();
+
+            vector = vector.normalize();
+
+            double xMotion = vector.xCoord / ConfigValues.sparkSpeedFactor;
+            double yMotion = vector.yCoord / ConfigValues.sparkSpeedFactor;
+            double zMotion = vector.zCoord / ConfigValues.sparkSpeedFactor;
+            int lifespan = (int) (distance * ConfigValues.sparkSpeedFactor);
+
+            EntityFX spark = new EntityFXSpark(worldObj, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, xMotion, yMotion, zMotion, lifespan);
+            Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+        }
     }
 
     public void resetCounter()
