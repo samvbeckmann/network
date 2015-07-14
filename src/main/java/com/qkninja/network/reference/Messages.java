@@ -20,7 +20,7 @@ public final class Messages
         public static final String TWO_WAY = PREFIX + "twoway";
     }
 
-    public static final class Configuration
+    public static final class Configuration // TODO: De-Localize
     {
         public static final String DIFFICULTY = "difficulty";
         public static final String DIFFICULTY_DESCRIPTION = "The difficulty of the mod. 0 = easy, 1 = normal, 2 = hard";

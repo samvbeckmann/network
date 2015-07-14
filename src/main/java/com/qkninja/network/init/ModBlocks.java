@@ -2,6 +2,7 @@ package com.qkninja.network.init;
 
 import com.qkninja.network.block.BlockNetwork;
 import com.qkninja.network.block.BlockTransporter;
+import com.qkninja.network.item.ItemBlockTransporter;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.reference.Reference;
 import com.qkninja.network.tileentity.TileEntityTransporter;
@@ -19,7 +20,7 @@ public class ModBlocks
 
     public static void init()
     {
-        GameRegistry.registerBlock(transporter, Names.Blocks.TRANSPORTER);
+        GameRegistry.registerBlock(transporter, ItemBlockTransporter.class, Names.Blocks.TRANSPORTER);
 
         GameRegistry.registerTileEntity(TileEntityTransporter.class, Names.TileEntities.TILE_TRANSPORTER);
     }

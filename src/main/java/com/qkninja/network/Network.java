@@ -36,11 +36,11 @@ public class Network
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 
-        proxy.preInit();
-
         ModItems.init();
 
         ModBlocks.init();
+
+        proxy.preInit();
 
         FMLInterModComms.sendMessage("Waila", "register", "com.qkninja.network.thirdparty.waila.Waila.onWailaCall");
 
