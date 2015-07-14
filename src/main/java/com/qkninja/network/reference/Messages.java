@@ -30,6 +30,9 @@ public final class Messages
 
         public static final String MAX_DISTANCE_SQUARED = "maxDistanceSquared";
         public static final String MAX_DISTANCE_DESCRIPTION = "The maximum distance, squared, connections between nexuses can be made";
+
+        public static final String SPARK_SPEED_FACTOR = "sparkSpeedFactor";
+        public static final String SPARK_SPEED_DESCRIPTION = "The distance sparks travel in 1 tick. Higher values = slower sparks.";
     }
 
     public static final class Waila

@@ -42,6 +42,7 @@ public class ConfigurationHandler
         ConfigValues.difficulty = configuration.getInt(Messages.Configuration.DIFFICULTY, Configuration.CATEGORY_GENERAL, 1, 0, 2, Messages.Configuration.DIFFICULTY_DESCRIPTION);
         ConfigValues.transportDelay = configuration.getInt(Messages.Configuration.TRANSPORT_DELAY, Configuration.CATEGORY_GENERAL, 20, 1, 1000, Messages.Configuration.TRANSPORT_DELAY_DESCRIPTION);
         ConfigValues.maxDistanceSq = configuration.getInt(Messages.Configuration.MAX_DISTANCE_SQUARED, Configuration.CATEGORY_GENERAL, 256, 1, 4096, Messages.Configuration.MAX_DISTANCE_DESCRIPTION);
+        ConfigValues.sparkSpeedFactor = configuration.getInt(Messages.Configuration.SPARK_SPEED_FACTOR, Configuration.CATEGORY_GENERAL, 10, 1, 1000, Messages.Configuration.SPARK_SPEED_DESCRIPTION);
 
         if (configuration.hasChanged())
         {
