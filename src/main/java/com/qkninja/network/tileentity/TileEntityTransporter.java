@@ -91,7 +91,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                             if (tile != null && tile instanceof IInventory)
                             {
                                 IInventory inv = (IInventory) tile;
-                                ItemStack remainder = TileEntityHopper.func_145889_a(inv, inventory, 0);
+                                ItemStack remainder = TileEntityHopper.func_145889_a(inv, inventory, this.getBlockMetadata());
                                 if (remainder == null)
                                 {
                                     inventory = null;
