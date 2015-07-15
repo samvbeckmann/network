@@ -4,12 +4,10 @@ import com.qkninja.network.init.ModItems;
 import com.qkninja.network.item.ItemHyperspanner;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -59,6 +57,37 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     }
 
     @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+    {
+        ForgeDirection direction = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
+        AxisAlignedBB bb;
+
+        switch (direction)
+        {
+            case DOWN:
+                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, 1 - HEIGHT + y, DISTANCE_FROM_EDGE + z, 1 - DISTANCE_FROM_EDGE + x, 1 + y, 1 - DISTANCE_FROM_EDGE + z);
+                break;
+            case EAST:
+                bb = AxisAlignedBB.getBoundingBox(x, DISTANCE_FROM_EDGE + y, DISTANCE_FROM_EDGE + z, HEIGHT + x, 1 - DISTANCE_FROM_EDGE + y, 1 - DISTANCE_FROM_EDGE + z);
+                break;
+            case WEST:
+                bb = AxisAlignedBB.getBoundingBox(1 - HEIGHT + x, DISTANCE_FROM_EDGE + y, DISTANCE_FROM_EDGE + z, 1 + x, 1 - DISTANCE_FROM_EDGE + y, 1 - DISTANCE_FROM_EDGE + z);
+                break;
+            case SOUTH:
+                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, DISTANCE_FROM_EDGE + y, z, 1 - DISTANCE_FROM_EDGE + x, 1 - DISTANCE_FROM_EDGE + y, HEIGHT + z);
+                break;
+            case NORTH:
+                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, DISTANCE_FROM_EDGE + y, 1 - HEIGHT + z, 1 - DISTANCE_FROM_EDGE + x, 1 - DISTANCE_FROM_EDGE + y, 1 + z);
+                break;
+            case UP:
+            default:
+                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, y, DISTANCE_FROM_EDGE + z, 1 - DISTANCE_FROM_EDGE + x, HEIGHT + y, 1 - DISTANCE_FROM_EDGE + z);
+                break;
+        }
+        return bb;
+    }
+
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z)
     {
         ForgeDirection direction = ForgeDirection.getOrientation(blockAccess.getBlockMetadata(x, y, z));
@@ -84,6 +113,12 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
                 this.setBlockBounds(DISTANCE_FROM_EDGE, 0, DISTANCE_FROM_EDGE, 1 - DISTANCE_FROM_EDGE, HEIGHT, 1 - DISTANCE_FROM_EDGE);
                 break;
         }
+    }
+
+    @Override
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+    {
+        return false;
     }
 
     @Override

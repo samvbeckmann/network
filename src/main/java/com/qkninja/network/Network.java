@@ -67,9 +67,9 @@ public class Network
 
     }
 
-    @Mod.EventHandler
-    public void onIMCMessages(FMLInterModComms.IMCEvent event)
-    {
-
-    }
+//    @Mod.EventHandler
+//    public void onIMCMessages(FMLInterModComms.IMCEvent event)
+//    {
+//
+//    }
 }

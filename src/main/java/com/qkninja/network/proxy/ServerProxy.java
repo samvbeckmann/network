@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
  *
  * @author QKninja
  */
+@SuppressWarnings("unused")
 public class ServerProxy extends CommonProxy
 {
 
