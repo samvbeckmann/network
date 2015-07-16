@@ -26,7 +26,7 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     {
         super();
         setBlockName(Names.Blocks.TRANSPORTER);
-        this.setLightLevel(10F);
+        this.setLightLevel(0.5F);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     }
 
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_)
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float par6, float par7, float par8, int par9)
     {
         return side;
     }
@@ -113,12 +113,6 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
                 this.setBlockBounds(DISTANCE_FROM_EDGE, 0, DISTANCE_FROM_EDGE, 1 - DISTANCE_FROM_EDGE, HEIGHT, 1 - DISTANCE_FROM_EDGE);
                 break;
         }
-    }
-
-    @Override
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
-    {
-        return false;
     }
 
     @Override
