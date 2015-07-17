@@ -8,6 +8,6 @@ Network is a modification for the game Minecraft that handles item transport.
 I welcome pull requests, especially bug fixes! If you feel so inclined to add a new feature, I recommend talking to me first, since I have a specific vision of which direction this mod should go, and I don't want people to waste their time coding something I won't implement.
 ### License
 The author of *Network* is Sam Beckmann (also known as QKninja).  
-*Network* is licensed under the [MIT license](http://opensource.org/licenses/MIT). See LICENSE.TXT for more details.
+*Network* is licensed under the [MIT license](http://opensource.org/licenses/MIT). See the LICENSE  file for more details.
 ### Credits
 Additional texture work done by AbnormalAndroid.
