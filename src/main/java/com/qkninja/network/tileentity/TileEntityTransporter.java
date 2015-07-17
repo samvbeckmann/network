@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -73,12 +74,27 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                             if (tile != null && tile instanceof IInventory)
                             {
                                 IInventory inv = (IInventory) tile;
-                                for (int i = 0; i < inv.getSizeInventory(); i++)
+                                if (inv instanceof ISidedInventory)
                                 {
-                                    if (inv.getStackInSlot(i) != null)
+                                    ISidedInventory sided = (ISidedInventory) inv;
+                                    for (int slot : sided.getAccessibleSlotsFromSide(this.getBlockMetadata()))
                                     {
-                                        inventory = inv.decrStackSize(i, 1);
-                                        return;
+                                        if (inv.getStackInSlot(slot) != null)
+                                        {
+                                            inventory = inv.decrStackSize(slot, 1);
+                                            return;
+                                        }
+                                    }
+
+                                } else
+                                {
+                                    for (int i = 0; i < inv.getSizeInventory(); i++)
+                                    {
+                                        if (inv.getStackInSlot(i) != null)
+                                        {
+                                            inventory = inv.decrStackSize(i, 1);
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -208,7 +224,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             double zMotion = vector.zCoord / ConfigValues.sparkSpeedFactor;
             int lifespan = (int) (distance * ConfigValues.sparkSpeedFactor);
 
-            EntityFX spark = new EntityFXSpark(worldObj, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, xMotion, yMotion, zMotion, lifespan);
+            EntityFX spark = new EntityFXSpark(worldObj, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, xMotion, yMotion, zMotion, lifespan, 1.0F, false);
             Minecraft.getMinecraft().effectRenderer.addEffect(spark);
         }
     }

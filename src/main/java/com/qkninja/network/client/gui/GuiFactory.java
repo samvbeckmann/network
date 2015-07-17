@@ -11,6 +11,7 @@ import java.util.Set;
  *
  * @author Sam Beckmann
  */
+@SuppressWarnings("unused")
 public class GuiFactory implements IModGuiFactory
 {
     @Override

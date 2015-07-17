@@ -17,7 +17,10 @@ public class EntityFXSpark extends EntityFX
 {
     private static final ResourceLocation texture = Textures.Particles.SPARK;
 
-    public EntityFXSpark(World world, double xPos, double yPos, double zPos, double motionX, double motionY, double motionZ, int lifespan)
+    private float opacity;
+    private boolean doFade;
+
+    public EntityFXSpark(World world, double xPos, double yPos, double zPos, double motionX, double motionY, double motionZ, int lifespan, float opacity, boolean doFade)
     {
         super(world, xPos, yPos, zPos);
         this.motionX = motionX;
@@ -25,6 +28,8 @@ public class EntityFXSpark extends EntityFX
         this.motionZ = motionZ;
         this.particleMaxAge = lifespan;
         this.noClip = true;
+        this.opacity = opacity;
+        this.doFade = doFade;
     }
 
     @Override
@@ -44,6 +49,7 @@ public class EntityFXSpark extends EntityFX
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
         tess.startDrawingQuads();
+        tess.setColorRGBA_F(1.0F, 1.0F, 1.0F, opacity);
         tess.addVertexWithUV((double) (x - par3 * PScale - par6 * PScale), (double) (y - par4 * PScale), (double) (z - par5 * PScale - par7 * PScale), 0, 0);
         tess.addVertexWithUV((double) (x - par3 * PScale + par6 * PScale), (double) (y + par4 * PScale), (double) (z - par5 * PScale + par7 * PScale), 1, 0);
         tess.addVertexWithUV((double) (x + par3 * PScale + par6 * PScale), (double) (y + par4 * PScale), (double) (z + par5 * PScale + par7 * PScale), 1, 1);
@@ -67,6 +73,7 @@ public class EntityFXSpark extends EntityFX
         if (Minecraft.getMinecraft().gameSettings.particleSetting == 2) this.setDead();
 
         if (worldObj.isRemote) this.motionHandler();
+        if (doFade) opacity -= .01;
 
         this.particleAge++;
     }

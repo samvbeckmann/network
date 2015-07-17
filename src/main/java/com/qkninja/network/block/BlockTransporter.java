@@ -1,16 +1,23 @@
 package com.qkninja.network.block;
 
+import com.qkninja.network.client.particle.EntityFXSpark;
 import com.qkninja.network.init.ModItems;
 import com.qkninja.network.item.ItemHyperspanner;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
 
 /**
  * Defines the block of a transporter (nexus)
@@ -112,6 +119,22 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
             case UP:
                 this.setBlockBounds(DISTANCE_FROM_EDGE, 0, DISTANCE_FROM_EDGE, 1 - DISTANCE_FROM_EDGE, HEIGHT, 1 - DISTANCE_FROM_EDGE);
                 break;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void randomDisplayTick(World world, int x, int y, int z, Random rnd)
+    {
+        if (rnd.nextFloat() > .75)
+        {
+            float spawnX = (float) (x + 0.25 + rnd.nextFloat() / 2);
+            float spawnY = (float) (y + 0.25 + rnd.nextFloat() / 2);
+            float spawnZ = (float) (z + 0.25 + rnd.nextFloat() / 2);
+            int lifespan = 40 + rnd.nextInt(40);
+
+            EntityFX spark = new EntityFXSpark(world, spawnX, spawnY, spawnZ, 0, 0, 0, lifespan, 0.5F, true);
+            Minecraft.getMinecraft().effectRenderer.addEffect(spark);
         }
     }
 

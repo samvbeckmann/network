@@ -9,7 +9,6 @@ import com.qkninja.network.utility.LogHelper;
 import com.qkninja.network.utility.TransporterMode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -134,17 +133,13 @@ public class ItemHyperspanner extends ItemNetwork
             TileEntityTransporter te = (TileEntityTransporter) world.getTileEntity(storedX, storedY, storedZ);
             if (te != null)
             {
-                if (te.addDestination(world, x, y, z))
-                {
-//                    world.markBlockForUpdate(x, y, z);
-                }
+                te.addDestination(world, x, y, z);
             }
 
             if (itemStack.getItemDamage() >= 2)
             {
                 TileEntityTransporter otherTE = (TileEntityTransporter) world.getTileEntity(x, y, z);
-                if (otherTE.addDestination(world, storedX, storedY, storedZ));
-//                    world.markBlockForUpdate(storedX, storedY, storedZ);
+                otherTE.addDestination(world, storedX, storedY, storedZ);
             }
 
             itemStack.setItemDamage(itemStack.getItemDamage() - 1);

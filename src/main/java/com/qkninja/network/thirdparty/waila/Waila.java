@@ -10,6 +10,7 @@ import mcp.mobius.waila.api.IWailaRegistrar;
  */
 public class Waila
 {
+    @SuppressWarnings("unused")
     public static void onWailaCall(IWailaRegistrar registrar)
     {
         registrar.registerStackProvider(new WailaTransporterHandler(), BlockTransporter.class);

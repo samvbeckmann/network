@@ -4,7 +4,6 @@ import com.qkninja.network.reference.Names;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
 
 /**
  * A handler object for containing coordinates and distance from another block.
