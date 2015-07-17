@@ -5,6 +5,7 @@ import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
+import com.qkninja.network.utility.ParticleHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +36,11 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     private ItemStack inventory;
     private List<DistanceHandler> exportLocations = new ArrayList<DistanceHandler>();
     private TransporterMode mode = TransporterMode.NEUTRAL;
+
+    public TileEntityTransporter()
+    {
+        super();
+    }
 
     @Override
     public void updateEntity()
@@ -126,7 +132,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             tempLocs = exportLocations.toArray(tempLocs);
 
             if (tempLocs.length > 0)
-                spawnParticles(tempLocs);
+                ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
         }
     }
 
@@ -201,32 +207,32 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         return false;
     }
 
-    /**
-     * Spawns a particle to travel along the paths of all active connections.
-     *
-     * @param locs array of locations to send particles to
-     */
-    private void spawnParticles(DistanceHandler[] locs)
-    {
-        for (DistanceHandler handler : locs)
-        {
-            double x = handler.getX() - xCoord;
-            double y = handler.getY() - yCoord;
-            double z = handler.getZ() - zCoord;
-            Vec3 vector = Vec3.createVectorHelper(x, y, z);
-            double distance = vector.lengthVector();
-
-            vector = vector.normalize();
-
-            double xMotion = vector.xCoord / ConfigValues.sparkSpeedFactor;
-            double yMotion = vector.yCoord / ConfigValues.sparkSpeedFactor;
-            double zMotion = vector.zCoord / ConfigValues.sparkSpeedFactor;
-            int lifespan = (int) (distance * ConfigValues.sparkSpeedFactor);
-
-            EntityFX spark = new EntityFXSpark(worldObj, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, xMotion, yMotion, zMotion, lifespan, 1.0F, false);
-            Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-        }
-    }
+//    /**
+//     * Spawns a particle to travel along the paths of all active connections.
+//     *
+//     * @param locs array of locations to send particles to
+//     */
+//    private void spawnParticles(DistanceHandler[] locs)
+//    {
+//        for (DistanceHandler handler : locs)
+//        {
+//            double x = handler.getX() - xCoord;
+//            double y = handler.getY() - yCoord;
+//            double z = handler.getZ() - zCoord;
+//            Vec3 vector = Vec3.createVectorHelper(x, y, z);
+//            double distance = vector.lengthVector();
+//
+//            vector = vector.normalize();
+//
+//            double xMotion = vector.xCoord / ConfigValues.sparkSpeedFactor;
+//            double yMotion = vector.yCoord / ConfigValues.sparkSpeedFactor;
+//            double zMotion = vector.zCoord / ConfigValues.sparkSpeedFactor;
+//            int lifespan = (int) (distance * ConfigValues.sparkSpeedFactor);
+//
+//            EntityFX spark = new EntityFXSpark(worldObj, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, xMotion, yMotion, zMotion, lifespan, 1.0F, false);
+//            Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+//        }
+//    }
 
     public void resetCounter()
     {

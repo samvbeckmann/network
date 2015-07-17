@@ -16,10 +16,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
- * Main class for the Dilithium Transportation mod
+ * Main class for the Network mod
  *
  * @author QKninja
- * @version 1.7.10-0.2
+ * @version 1.7.10-0.2.1
  */
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class Network
