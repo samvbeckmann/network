@@ -4,9 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 
 /**
- * dilithium-transportation, class made on 2015-07-13
+ * ItemBlock for transporter block.
+ * Used only to initialize renderer.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class ItemBlockTransporter extends ItemBlock
 {

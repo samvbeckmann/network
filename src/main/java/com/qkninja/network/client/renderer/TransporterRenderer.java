@@ -12,9 +12,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 /**
- * dilithium-transportation, class made on 6/23/2015.
+ * Renderer for the transporter block
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class TransporterRenderer extends TileEntitySpecialRenderer
 {

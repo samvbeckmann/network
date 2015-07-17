@@ -4,9 +4,9 @@ import com.qkninja.network.block.BlockTransporter;
 import mcp.mobius.waila.api.IWailaRegistrar;
 
 /**
- * dilithium-transportation, class made on 2015-06-29
+ * Waila handler, to register custom tooltips.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class Waila
 {

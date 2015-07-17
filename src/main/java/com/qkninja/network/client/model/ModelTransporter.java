@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * transporter - QKninja
+ * ModelTransporter - QKninja
  * Created using Tabula 4.1.1
  */
 public class ModelTransporter extends ModelBase {

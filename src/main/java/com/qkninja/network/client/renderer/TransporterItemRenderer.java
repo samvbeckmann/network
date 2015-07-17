@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 
 
 /**
- * dilithium-transportation, class made on 2015-07-13
+ * Item Renderer for the transporter block
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class TransporterItemRenderer implements IItemRenderer
 {

@@ -6,7 +6,6 @@ import com.qkninja.network.reference.Messages;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.LogHelper;
-import com.qkninja.network.utility.TransporterMode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -79,7 +78,7 @@ public class ItemHyperspanner extends ItemNetwork
                     if (tileEntity != null && tileEntity instanceof TileEntityTransporter)
                     {
                         TileEntityTransporter te = (TileEntityTransporter) tileEntity;
-                        TransporterMode mode = te.incrementMode();
+                        TileEntityTransporter.TransporterMode mode = te.incrementMode();
                         if (ConfigValues.debugMode) LogHelper.info("New Block Mode: " + mode);
                     }
                     return itemStack;

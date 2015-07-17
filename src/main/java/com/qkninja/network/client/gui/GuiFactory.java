@@ -7,9 +7,9 @@ import net.minecraft.client.gui.GuiScreen;
 import java.util.Set;
 
 /**
- * dilithium-transportation, class made on 2015-06-25
+ * Allows Config values to be edited in an in-game GUI
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 @SuppressWarnings("unused")
 public class GuiFactory implements IModGuiFactory

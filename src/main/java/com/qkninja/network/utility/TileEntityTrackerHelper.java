@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * dilithium-transportation, class made on 6/22/2015.
+ * Helper methods for tracking all the tile entities in the game
  *
  * @author Sam Beckmann
  */
@@ -15,6 +15,11 @@ public class TileEntityTrackerHelper
 {
     private static Minecraft mc = Minecraft.getMinecraft();
 
+    /**
+     * Gets all the Transporters currently loaded in the game.
+     *
+     * @return a list of all the transporters currently loaded in the world
+     */
     public static List<TileEntityTransporter> findTransporters()
     {
         List<TileEntityTransporter> transporters = new ArrayList<TileEntityTransporter>();

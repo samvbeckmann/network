@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Defines a spark texture, that travels along the connection paths.
+ * Defines a spark particle, that travels along the connection paths.
  *
  * @author Sam Beckmann
  */

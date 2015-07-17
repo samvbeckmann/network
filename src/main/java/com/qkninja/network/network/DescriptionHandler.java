@@ -12,9 +12,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * dilithium-transportation, class made on 6/22/2015.
+ * Creates the description handler for sending messages between client and server.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPacket>
 {

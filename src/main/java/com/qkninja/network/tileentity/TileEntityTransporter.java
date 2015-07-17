@@ -5,7 +5,6 @@ import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
-import com.qkninja.network.utility.TransporterMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
@@ -449,5 +448,13 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
         readSyncableData(pkt.func_148857_g());
+    }
+
+    /**
+     * Possible modes for a transporter to be in.
+     */
+    public enum TransporterMode
+    {
+        NEUTRAL, IMPORT, EXPORT
     }
 }

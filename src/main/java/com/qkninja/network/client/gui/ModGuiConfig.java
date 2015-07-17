@@ -8,9 +8,9 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
 /**
- * dilithium-transportation, class made on 2015-06-25
+ * Connects config to in-game GUI
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class ModGuiConfig extends GuiConfig
 {

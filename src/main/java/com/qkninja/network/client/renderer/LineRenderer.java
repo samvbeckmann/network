@@ -12,9 +12,9 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 /**
- * dilithium-transportation, class made on 6/22/2015.
+ * Renderer for blue lines between all connected transporters.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public class LineRenderer
 {

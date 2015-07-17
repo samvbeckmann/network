@@ -19,7 +19,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * Main class for the Dilithium Transportation mod
  *
  * @author QKninja
- * @version 1.7.10-0.1
+ * @version 1.7.10-0.2
  */
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class Network

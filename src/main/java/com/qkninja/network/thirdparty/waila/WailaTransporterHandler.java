@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 /**
- * dilithium-transportation, class made on 2015-06-29
+ * WAILA tooltip for the transporter.
  *
  * @author Sam Beckmann
  */
