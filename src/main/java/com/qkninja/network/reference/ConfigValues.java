@@ -10,6 +10,6 @@ public class ConfigValues
     public static int transportDelay = 20;
     public static int maxDistanceSq = 256;
     public static int difficulty = 1;
-    public static boolean debugMode = false;
+    public static boolean debugMode = false; /* No config file value, only set in code */
     public static int sparkSpeedFactor = 10;
 }

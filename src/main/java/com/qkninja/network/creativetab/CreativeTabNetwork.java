@@ -17,7 +17,7 @@ public class CreativeTabNetwork
         @Override
         public Item getTabIconItem()
         {
-            return ModItems.core;
+            return ModItems.hyperspanner;
         }
     };
 }
