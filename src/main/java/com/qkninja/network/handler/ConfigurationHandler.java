@@ -20,7 +20,7 @@ public class ConfigurationHandler
 
     public static void init(File configFile)
     {
-        // Create the configuration object from the given configuration file
+        /* Create the configuration object from the given configuration file */
         if (configuration == null)
         {
             configuration = new Configuration(configFile);
