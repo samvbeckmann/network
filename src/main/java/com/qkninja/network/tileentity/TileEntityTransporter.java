@@ -1,13 +1,10 @@
 package com.qkninja.network.tileentity;
 
-import com.qkninja.network.client.particle.EntityFXSpark;
 import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
 import com.qkninja.network.utility.ParticleHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,7 +16,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,6 +32,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     private ItemStack inventory;
     private List<DistanceHandler> exportLocations = new ArrayList<DistanceHandler>();
     private TransporterMode mode = TransporterMode.NEUTRAL;
+    private int startingRotation = new Random().nextInt(90);
 
     public TileEntityTransporter()
     {
@@ -381,6 +378,11 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     public List<DistanceHandler> getExportLocations()
     {
         return exportLocations;
+    }
+
+    public int getStartingRotation()
+    {
+        return startingRotation;
     }
 
     @Override

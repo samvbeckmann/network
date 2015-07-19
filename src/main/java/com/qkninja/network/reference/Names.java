@@ -43,9 +43,9 @@ public final class Names
     public static final class Models
     {
         private static final String MODEL_PREFIX = "textures/models/";
+        public static final String MODEL_SUFFIX = ".png";
 
         public static final String TRANSPORTER = MODEL_PREFIX + "transporter";
-
-        public static final String MODEL_SUFFIX = ".png";
+        public static final String CRYSTAL = MODEL_PREFIX + "crystal" + MODEL_SUFFIX;
     }
 }
