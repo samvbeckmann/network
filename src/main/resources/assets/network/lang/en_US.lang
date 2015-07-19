@@ -2,7 +2,7 @@
 itemGroup.network=Network
 
 # Items
-item.network:core.name=Core
+item.network:itemCore.name=Item Core
 item.network:hyperspanner.name=Hyperspanner
 
 # Blocks

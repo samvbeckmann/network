@@ -47,11 +47,14 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         this.model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 
-        texture = ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        setCoreTranslationFromTime(transporter);
-        setCoreRotationFromTime(transporter);
-        this.crystal.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+        if (transporter.getActiveCore() != null)
+        {
+            texture = ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
+            Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+            setCoreTranslationFromTime(transporter);
+            setCoreRotationFromTime(transporter);
+            this.crystal.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+        }
 
         GL11.glPopMatrix();
         GL11.glPopMatrix();

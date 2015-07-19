@@ -1,6 +1,6 @@
 package com.qkninja.network.init;
 
-import com.qkninja.network.item.itemCore;
+import com.qkninja.network.item.itemItemCore;
 import com.qkninja.network.item.ItemNetwork;
 import com.qkninja.network.item.ItemHyperspanner;
 import com.qkninja.network.reference.Names;
@@ -15,13 +15,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModItems
 {
-    public static final ItemNetwork core = new itemCore();
+    public static final ItemNetwork core = new itemItemCore();
     public static final ItemNetwork hyperspanner = new ItemHyperspanner();
 
 
     public static void init()
     {
-        GameRegistry.registerItem(core, Names.Items.CORE);
+        GameRegistry.registerItem(core, Names.Items.ITEM_CORE);
         GameRegistry.registerItem(hyperspanner, Names.Items.HYPERSPANNER);
     }
 }

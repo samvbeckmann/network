@@ -2,6 +2,7 @@ package com.qkninja.network.block;
 
 import com.qkninja.network.client.particle.EntityFXSpark;
 import com.qkninja.network.init.ModItems;
+import com.qkninja.network.item.INetworkModCore;
 import com.qkninja.network.item.ItemHyperspanner;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
@@ -47,11 +48,28 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     {
         if (!world.isRemote)
         {
-            if (entityPlayer.getHeldItem() != null && entityPlayer.getHeldItem().getItem() == ModItems.hyperspanner)
+            TileEntityTransporter te = (TileEntityTransporter) world.getTileEntity(x, y, z);
+
+            if (entityPlayer.getHeldItem() == null && entityPlayer.isSneaking())
+            {
+                INetworkModCore core = te.getActiveCore();
+                if (core != null)
+                {
+                    entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, core.getItemStack());
+                    te.setActiveCore(null);
+                }
+
+            }
+            else if (entityPlayer.getHeldItem() != null && entityPlayer.getHeldItem().getItem() == ModItems.hyperspanner)
             {
                 ItemHyperspanner hyperspanner = (ItemHyperspanner) entityPlayer.getHeldItem().getItem();
                 hyperspanner.storeOrLinkCoordinates(world, entityPlayer.getHeldItem(), x, y, z);
                 return true;
+            }
+            else if (entityPlayer.getHeldItem() != null && entityPlayer.getHeldItem().getItem() instanceof INetworkModCore && te.getActiveCore() == null)
+            {
+                te.setActiveCore((INetworkModCore) entityPlayer.getHeldItem().getItem());
+                entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
             }
         }
         return false;
