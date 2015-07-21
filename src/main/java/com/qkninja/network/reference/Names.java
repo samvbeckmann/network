@@ -29,6 +29,7 @@ public final class Names
         public static final String LOCATIONS = "locations";
         public static final String MODE = "mode";
         public static final String CORE = "core";
+        public static final String ITEMS = "items";
     }
 
     public static final class TileEntities

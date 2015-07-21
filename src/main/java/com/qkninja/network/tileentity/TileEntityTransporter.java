@@ -330,7 +330,12 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         super.readFromNBT(tag);
 
         counter = tag.getShort(Names.NBT.COUNTER);
-        inventory = ItemStack.loadItemStackFromNBT(tag);
+        NBTTagCompound invCompound = (NBTTagCompound) tag.getTag(Names.NBT.CORE);
+        if (invCompound != null)
+            inventory = ItemStack.loadItemStackFromNBT(tag);
+        else
+            inventory = null;
+
 
         this.readSyncableData(tag);
     }
@@ -341,7 +346,12 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         super.writeToNBT(tag);
 
         tag.setShort(Names.NBT.COUNTER, (short) counter);
-        if (inventory != null) inventory.writeToNBT(tag);
+        if (inventory != null)
+        {
+            NBTTagCompound invCompound = new NBTTagCompound();
+            inventory.writeToNBT(tag);
+            tag.setTag(Names.NBT.ITEMS, invCompound);
+        }
 
         writeSyncableData(tag);
     }
@@ -373,7 +383,8 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         {
             ItemStack coreItemStack = ItemStack.loadItemStackFromNBT(coreCompound);
             activeCore = (INetworkModCore) coreItemStack.getItem();
-        }
+        } else
+            activeCore = null;
 
         mode = TransporterMode.values()[tag.getByte(Names.NBT.MODE)];
         exportLocations = new ArrayList<DistanceHandler>();

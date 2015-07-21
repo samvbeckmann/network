@@ -20,12 +20,10 @@ import org.lwjgl.opengl.GL11;
 public class TransporterRenderer extends TileEntitySpecialRenderer
 {
     private final ModelTransporter model;
-    private final ModelCrystal crystal;
 
     public TransporterRenderer()
     {
         this.model = new ModelTransporter();
-        this.crystal = new ModelCrystal();
     }
 
     /**
@@ -49,11 +47,11 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
 
         if (transporter.getActiveCore() != null)
         {
-            texture = ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
+            texture = transporter.getActiveCore().getTexture();
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             setCoreTranslationFromTime(transporter);
             setCoreRotationFromTime(transporter);
-            this.crystal.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            transporter.getActiveCore().getModel().render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
         }
 
         GL11.glPopMatrix();

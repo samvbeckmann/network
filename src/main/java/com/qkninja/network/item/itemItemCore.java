@@ -1,13 +1,17 @@
 package com.qkninja.network.item;
 
+import com.qkninja.network.client.model.ModelCrystal;
 import com.qkninja.network.handler.DistanceHandler;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
+import com.qkninja.network.utility.ResourceLocationHelper;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.Collections;
 
@@ -57,8 +61,8 @@ public class itemItemCore extends ItemNetwork implements INetworkModCore
                     }
                 }
             }
-            attemptTeleport(nexus);
         }
+        attemptTeleport(nexus);
     }
 
     @Override
@@ -91,6 +95,18 @@ public class itemItemCore extends ItemNetwork implements INetworkModCore
     public ItemStack getItemStack()
     {
         return new ItemStack(this);
+    }
+
+    @Override
+    public ModelBase getModel()
+    {
+        return new ModelCrystal();
+    }
+
+    @Override
+    public ResourceLocation getTexture()
+    {
+        return ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
     }
 
     private boolean attemptTeleport(TileEntityTransporter nexus)
