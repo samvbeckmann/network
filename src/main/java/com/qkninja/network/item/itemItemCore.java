@@ -120,10 +120,10 @@ public class itemItemCore extends ItemNetwork implements INetworkModCore
                 if (tile instanceof TileEntityTransporter) // Should always be true
                 {
                     TileEntityTransporter transporter = (TileEntityTransporter) tile;
-                    if (transporter.getStackInSlot(1) == null)
+                    if (transporter.getStackInSlot(0) == null)
                     {
-                        transporter.setInventorySlotContents(1, nexus.getStackInSlot(0));
-                        nexus.decrStackSize(1, 1);
+                        transporter.setInventorySlotContents(0, nexus.getStackInSlot(0));
+                        nexus.decrStackSize(0, 1);
                         transporter.resetCounter();
                         nexus.resetCounter();
                         return true;

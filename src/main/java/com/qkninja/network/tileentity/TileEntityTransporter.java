@@ -330,9 +330,9 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         super.readFromNBT(tag);
 
         counter = tag.getShort(Names.NBT.COUNTER);
-        NBTTagCompound invCompound = (NBTTagCompound) tag.getTag(Names.NBT.CORE);
+        NBTTagCompound invCompound = (NBTTagCompound) tag.getTag(Names.NBT.ITEMS);
         if (invCompound != null)
-            inventory = ItemStack.loadItemStackFromNBT(tag);
+            inventory = ItemStack.loadItemStackFromNBT(invCompound);
         else
             inventory = null;
 
@@ -349,7 +349,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         if (inventory != null)
         {
             NBTTagCompound invCompound = new NBTTagCompound();
-            inventory.writeToNBT(tag);
+            inventory.writeToNBT(invCompound);
             tag.setTag(Names.NBT.ITEMS, invCompound);
         }
 
