@@ -1,6 +1,5 @@
 package com.qkninja.network.client.renderer;
 
-import com.qkninja.network.client.model.ModelCrystal;
 import com.qkninja.network.client.model.ModelTransporter;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
@@ -29,7 +28,7 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
     /**
      * Renders both the nexus frame and whatever core is attached.
      */
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale)
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick)
     {
         TileEntityTransporter transporter = (TileEntityTransporter) te;
         ForgeDirection direction = ForgeDirection.getOrientation(te.getBlockMetadata());
@@ -49,8 +48,8 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
         {
             texture = transporter.getActiveCore().getTexture();
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-            setCoreTranslationFromTime(transporter);
-            setCoreRotationFromTime(transporter);
+            setCoreTranslationFromTime(transporter, partialTick);
+            setCoreRotationFromTime(transporter, partialTick);
             transporter.getActiveCore().getModel().render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
         }
 
@@ -62,9 +61,9 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
      * Sets the transloation for the renderer based on the orientation of the Nexus
      *
      * @param direction Side of block on which the Nexus is sitting.
-     * @param x xCoord
-     * @param y yCoord
-     * @param z zCoord
+     * @param x         xCoord
+     * @param y         yCoord
+     * @param z         zCoord
      */
     private void setTranslationFromDirection(ForgeDirection direction, double x, double y, double z)
     {
@@ -124,10 +123,10 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
      *
      * @param te Nexus being rendered
      */
-    private void setCoreRotationFromTime(TileEntityTransporter te)
+    private void setCoreRotationFromTime(TileEntityTransporter te, float partialTick)
     {
         long offsetTime = te.getWorldObj().getTotalWorldTime() + te.getStartingRotation();
-        float rotation = (float) offsetTime % 360;
+        float rotation = (offsetTime  + partialTick) % 360;
         GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
     }
 
@@ -136,9 +135,9 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
      *
      * @param te Nexus being rendered
      */
-    private void setCoreTranslationFromTime(TileEntityTransporter te)
+    private void setCoreTranslationFromTime(TileEntityTransporter te, float partialTick)
     {
-        float translate = (float) Math.sin((te.getWorldObj().getTotalWorldTime() + te.getStartingRotation()) * 0.02);
+        float translate = (float) Math.sin((te.getWorldObj().getTotalWorldTime() + te.getStartingRotation() + partialTick) * 0.02);
         GL11.glTranslatef(0.0F, translate * 0.02F, 0.0F);
     }
 }
