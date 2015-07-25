@@ -3,8 +3,12 @@ package com.qkninja.network.proxy;
 import com.qkninja.network.client.renderer.LineRenderer;
 import com.qkninja.network.client.renderer.TransporterItemRenderer;
 import com.qkninja.network.client.renderer.TransporterRenderer;
+import com.qkninja.network.client.renderer.UpgradeItemRenderer;
 import com.qkninja.network.init.ModBlocks;
+import com.qkninja.network.init.ModItems;
+import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
+import com.qkninja.network.utility.ResourceLocationHelper;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,5 +56,7 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTransporter.class, new TransporterRenderer());
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.transporter), new TransporterItemRenderer());
+
+        MinecraftForgeClient.registerItemRenderer(ModItems.redLED, new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.RED_LED)));
     }
 }

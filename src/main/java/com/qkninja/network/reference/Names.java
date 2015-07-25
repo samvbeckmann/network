@@ -9,8 +9,9 @@ public final class Names
 {
     public static final class Items
     {
-        public static final String CORE = "core";
+        public static final String ITEM_CORE = "itemCore";
         public static final String HYPERSPANNER = "hyperspanner";
+        public static final String RED_LED = "redLED";
     }
 
     public static final class Blocks
@@ -28,6 +29,11 @@ public final class Names
         public static final String DISTANCE = "distance";
         public static final String LOCATIONS = "locations";
         public static final String MODE = "mode";
+        public static final String CORE = "core";
+        public static final String ITEMS = "items";
+        public static final String DELAY = "delay";
+        public static final String MAX_DISTANCE = "maxDistance";
+        public static final String UPGRADES = "upgrades";
     }
 
     public static final class TileEntities
@@ -47,5 +53,6 @@ public final class Names
 
         public static final String TRANSPORTER = MODEL_PREFIX + "transporter";
         public static final String CRYSTAL = MODEL_PREFIX + "crystal" + MODEL_SUFFIX;
+        public static final String RED_LED = MODEL_PREFIX + "redLED" + MODEL_SUFFIX;
     }
 }

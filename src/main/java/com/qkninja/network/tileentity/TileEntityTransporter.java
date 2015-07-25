@@ -1,13 +1,14 @@
 package com.qkninja.network.tileentity;
 
 import com.qkninja.network.handler.DistanceHandler;
+import com.qkninja.network.item.INetworkModCore;
+import com.qkninja.network.item.INexusUpgrade;
 import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.utility.LogHelper;
 import com.qkninja.network.utility.ParticleHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,10 +16,10 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -31,8 +32,12 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     private int counter;
     private ItemStack inventory;
     private List<DistanceHandler> exportLocations = new ArrayList<DistanceHandler>();
+    private Stack<INexusUpgrade> upgrades = new Stack<INexusUpgrade>();
     private TransporterMode mode = TransporterMode.NEUTRAL;
     private int startingRotation = new Random().nextInt(90);
+    private INetworkModCore activeCore;
+    private int delay = ConfigValues.transportDelay;
+    private int connectionDistance = ConfigValues.maxDistanceSq;
 
     public TileEntityTransporter()
     {
@@ -42,9 +47,9 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     @Override
     public void updateEntity()
     {
-        if (counter < ConfigValues.transportDelay) counter++;
+        if (counter < delay) counter++;
 
-        if (counter >= ConfigValues.transportDelay)
+        if (counter >= delay)
         {
             DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
             tempLocs = exportLocations.toArray(tempLocs);
@@ -60,68 +65,23 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             }
         }
 
-        if (!worldObj.isRemote)
+        if (!worldObj.isRemote && activeCore != null)
         {
 
-            if (counter >= ConfigValues.transportDelay)
+            if (counter >= delay)
             {
-
-
                 switch (mode)
                 {
                     case IMPORT:
-                        if (inventory == null)
-                        {
-                            TileEntity tile = getTileEntityFromMetadata();
-                            if (tile != null && tile instanceof IInventory)
-                            {
-                                IInventory inv = (IInventory) tile;
-                                if (inv instanceof ISidedInventory)
-                                {
-                                    ISidedInventory sided = (ISidedInventory) inv;
-                                    for (int slot : sided.getAccessibleSlotsFromSide(this.getBlockMetadata()))
-                                    {
-                                        if (inv.getStackInSlot(slot) != null)
-                                        {
-                                            inventory = inv.decrStackSize(slot, 1);
-                                            return;
-                                        }
-                                    }
-
-                                } else
-                                {
-                                    for (int i = 0; i < inv.getSizeInventory(); i++)
-                                    {
-                                        if (inv.getStackInSlot(i) != null)
-                                        {
-                                            inventory = inv.decrStackSize(i, 1);
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        activeCore.onNexusImportCall(this);
                         break;
                     case EXPORT:
-                        if (inventory != null)
-                        {
-                            TileEntity tile = getTileEntityFromMetadata();
-                            if (tile != null && tile instanceof IInventory)
-                            {
-                                IInventory inv = (IInventory) tile;
-                                ItemStack remainder = TileEntityHopper.func_145889_a(inv, inventory, this.getBlockMetadata());
-                                if (remainder == null)
-                                {
-                                    inventory = null;
-                                    return;
-                                }
-                            }
-                        }
+                        activeCore.onNexusExportCall(this);
+                        break;
+                    case NEUTRAL:
+                        activeCore.onNexusNeutralCall(this);
                         break;
                 }
-
-                if (inventory != null)
-                    attemptTeleport();
             }
         } else if (worldObj.getTotalWorldTime() % 20 == 0)
         {
@@ -132,6 +92,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                 ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
         }
     }
+
 
     public boolean addDestination(World world, int x, int y, int z)
     {
@@ -146,7 +107,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         }
         {
             DistanceHandler handler = new DistanceHandler(this, x, y, z);
-            if (handler.getDistance() > ConfigValues.maxDistanceSq)
+            if (handler.getDistance() > connectionDistance)
             {
                 if (ConfigValues.debugMode) LogHelper.info("Blocks not linked, too far away.");
                 return false;
@@ -181,61 +142,19 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         return te instanceof TileEntityTransporter;
     }
 
-
-    private boolean attemptTeleport()
-    {
-        Collections.sort(exportLocations);
-        for (DistanceHandler loc : exportLocations)
-        {
-            TileEntity tile = worldObj.getTileEntity(loc.getX(), loc.getY(), loc.getZ());
-            if (tile instanceof TileEntityTransporter) // Should always be true
-            {
-                TileEntityTransporter transporter = (TileEntityTransporter) tile;
-                if (transporter.getStackInSlot(1) == null)
-                {
-                    transporter.setInventorySlotContents(1, this.inventory);
-                    this.decrStackSize(1, 1);
-                    transporter.resetCounter();
-                    resetCounter();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-//    /**
-//     * Spawns a particle to travel along the paths of all active connections.
-//     *
-//     * @param locs array of locations to send particles to
-//     */
-//    private void spawnParticles(DistanceHandler[] locs)
-//    {
-//        for (DistanceHandler handler : locs)
-//        {
-//            double x = handler.getX() - xCoord;
-//            double y = handler.getY() - yCoord;
-//            double z = handler.getZ() - zCoord;
-//            Vec3 vector = Vec3.createVectorHelper(x, y, z);
-//            double distance = vector.lengthVector();
-//
-//            vector = vector.normalize();
-//
-//            double xMotion = vector.xCoord / ConfigValues.sparkSpeedFactor;
-//            double yMotion = vector.yCoord / ConfigValues.sparkSpeedFactor;
-//            double zMotion = vector.zCoord / ConfigValues.sparkSpeedFactor;
-//            int lifespan = (int) (distance * ConfigValues.sparkSpeedFactor);
-//
-//            EntityFX spark = new EntityFXSpark(worldObj, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, xMotion, yMotion, zMotion, lifespan, 1.0F, false);
-//            Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-//        }
-//    }
-
+    /**
+     * Resets the counter until the next interaction.
+     */
     public void resetCounter()
     {
         counter = 0;
     }
 
+    /**
+     * When called, cycles the Nexus to it's next mode
+     *
+     * @return {@link com.qkninja.network.tileentity.TileEntityTransporter.TransporterMode} the Nexus is now in.
+     */
     public TransporterMode incrementMode()
     {
         switch (mode)
@@ -255,7 +174,13 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         return mode;
     }
 
-    private TileEntity getTileEntityFromMetadata()
+    /**
+     * Gets The tile entity that the Nexus would interact with, based on it's orientation.
+     *
+     * @return Tile tile entity that the Nexus would interact with, or null if it doesn't exist.
+     */
+    @Nullable
+    public TileEntity getAttachedTileEntity()
     {
         ForgeDirection direction = ForgeDirection.getOrientation(blockMetadata);
         switch (direction)
@@ -284,6 +209,18 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     public void setMode(TransporterMode mode)
     {
         this.mode = mode;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
+    }
+
+    public INetworkModCore getActiveCore()
+    {
+        return activeCore;
+    }
+
+    public void setActiveCore(INetworkModCore activeCore)
+    {
+        this.activeCore = activeCore;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();
     }
@@ -385,11 +322,66 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         return startingRotation;
     }
 
+    public int getDelay()
+    {
+        return delay;
+    }
+
+    public void setDelay(int delay)
+    {
+        this.delay = delay;
+    }
+
+    public int getConnectionDistance()
+    {
+        return connectionDistance;
+    }
+
+    public void setConnectionDistance(int connectionDistance)
+    {
+        this.connectionDistance = connectionDistance;
+    }
+
+    public Stack<INexusUpgrade> getUpgrades()
+    {
+        return upgrades;
+    }
+
+    public boolean addUpgrade(INexusUpgrade upgrade)
+    {
+        if (upgrades.size() >= ConfigValues.maxUpgradeNumber || upgrades.contains(upgrade))
+            return false;
+        else
+        {
+            upgrades.push(upgrade);
+            upgrade.onAdded(this);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            markDirty();
+            return true;
+        }
+    }
+
+    public INexusUpgrade removeTopUpgrade()
+    {
+        if (upgrades.isEmpty())
+            return null;
+        else
+        {
+            INexusUpgrade upgrade = upgrades.pop();
+            upgrade.onRemoved(this);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            markDirty();
+            return upgrade;
+        }
+    }
+
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_)
+    public boolean isItemValidForSlot(int slot, ItemStack item)
     {
         return true;
     }
+
+
 
     @Override
     public void readFromNBT(NBTTagCompound tag)
@@ -397,7 +389,14 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         super.readFromNBT(tag);
 
         counter = tag.getShort(Names.NBT.COUNTER);
-        inventory = ItemStack.loadItemStackFromNBT(tag);
+        this.setDelay(tag.getShort(Names.NBT.DELAY));
+        this.setConnectionDistance(tag.getShort(Names.NBT.MAX_DISTANCE));
+        NBTTagCompound invCompound = (NBTTagCompound) tag.getTag(Names.NBT.ITEMS);
+        if (invCompound != null)
+            inventory = ItemStack.loadItemStackFromNBT(invCompound);
+        else
+            inventory = null;
+
 
         this.readSyncableData(tag);
     }
@@ -408,14 +407,29 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         super.writeToNBT(tag);
 
         tag.setShort(Names.NBT.COUNTER, (short) counter);
-        if (inventory != null) inventory.writeToNBT(tag);
+        tag.setShort(Names.NBT.DELAY, (short) this.getDelay());
+        tag.setShort(Names.NBT.MAX_DISTANCE, (short) this.getConnectionDistance());
+        if (inventory != null)
+        {
+            NBTTagCompound invCompound = new NBTTagCompound();
+            inventory.writeToNBT(invCompound);
+            tag.setTag(Names.NBT.ITEMS, invCompound);
+        }
 
         writeSyncableData(tag);
     }
 
     private NBTTagCompound writeSyncableData(NBTTagCompound tag)
     {
+        if (activeCore != null)
+        {
+            NBTTagCompound core = new NBTTagCompound();
+            activeCore.getItemStack().writeToNBT(core);
+            tag.setTag(Names.NBT.CORE, core);
+        }
+
         tag.setByte(Names.NBT.MODE, (byte) mode.ordinal());
+
         NBTTagList tagList = new NBTTagList();
         for (DistanceHandler exportLocation : exportLocations)
         {
@@ -424,12 +438,31 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             tagList.appendTag(tagCompound);
         }
         tag.setTag(Names.NBT.LOCATIONS, tagList);
+
+        NBTTagList upgradeList = new NBTTagList();
+        for (INexusUpgrade upgrade : this.getUpgrades())
+        {
+            NBTTagCompound compound = new NBTTagCompound();
+            upgrade.getItemStack().writeToNBT(compound);
+            upgradeList.appendTag(compound);
+        }
+        tag.setTag(Names.NBT.UPGRADES, upgradeList);
+
         return tag;
     }
 
     private void readSyncableData(NBTTagCompound tag)
     {
+        NBTTagCompound coreCompound = (NBTTagCompound) tag.getTag(Names.NBT.CORE);
+        if (coreCompound != null)
+        {
+            ItemStack coreItemStack = ItemStack.loadItemStackFromNBT(coreCompound);
+            activeCore = (INetworkModCore) coreItemStack.getItem();
+        } else
+            activeCore = null;
+
         mode = TransporterMode.values()[tag.getByte(Names.NBT.MODE)];
+
         exportLocations = new ArrayList<DistanceHandler>();
         NBTTagList tagList = tag.getTagList(Names.NBT.LOCATIONS, 10);
         for (int i = 0; i < tagList.tagCount(); i++)
@@ -441,6 +474,14 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             float distance = tagCompound.getFloat(Names.NBT.DISTANCE);
             DistanceHandler handler = new DistanceHandler(x, y, z, distance);
             exportLocations.add(handler);
+        }
+
+        upgrades = new Stack<INexusUpgrade>();
+        NBTTagList upgradeList= tag.getTagList(Names.NBT.UPGRADES, 10);
+        for (int i = 0; i < upgradeList.tagCount(); i++)
+        {
+            NBTTagCompound compound = upgradeList.getCompoundTagAt(i);
+            upgrades.push((INexusUpgrade) ItemStack.loadItemStackFromNBT(compound).getItem());
         }
     }
 

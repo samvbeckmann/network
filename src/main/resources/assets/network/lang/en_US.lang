@@ -2,8 +2,9 @@
 itemGroup.network=Network
 
 # Items
-item.network:core.name=Core
+item.network:itemCore.name=Item Core
 item.network:hyperspanner.name=Hyperspanner
+item.network:redLED.name=Red LED Ring
 
 # Blocks
 tile.network:transporter.name=Nexus
