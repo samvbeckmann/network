@@ -1,6 +1,7 @@
 package com.qkninja.network.client.renderer;
 
 import com.qkninja.network.client.model.ModelTransporter;
+import com.qkninja.network.item.INexusUpgrade;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
@@ -10,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Stack;
 
 /**
  * Renderer for the transporter block and the attached core.
@@ -46,11 +49,40 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
 
         if (transporter.getActiveCore() != null)
         {
+            GL11.glPushMatrix();
             texture = transporter.getActiveCore().getTexture();
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             setCoreTranslationFromTime(transporter, partialTick);
-            setCoreRotationFromTime(transporter, partialTick);
+            setRotationFromTime(transporter, partialTick, false);
             transporter.getActiveCore().getModel().render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            GL11.glPopMatrix();
+        }
+
+        @SuppressWarnings("unchecked")
+        Stack<INexusUpgrade> upgrades = (Stack<INexusUpgrade>) transporter.getUpgrades().clone();
+        int numUpgrades = upgrades.size();
+        float totalSpacing = (-1 / (numUpgrades + 1)) / 2;
+        for (int i = 0; i < numUpgrades; i++)
+        {
+            GL11.glPushMatrix();
+            INexusUpgrade up = upgrades.pop();
+            texture = up.getTexture();
+            Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+            float yOffset;
+            if (numUpgrades > 1)
+                yOffset = (totalSpacing / 2) - ((totalSpacing / (numUpgrades - 1)) * i);
+            else
+                yOffset = 0;
+            GL11.glTranslatef(0.0F, yOffset, 0);
+
+            long offsetTime = transporter.getWorldObj().getTotalWorldTime() + transporter.getStartingRotation();
+            float rotation = (offsetTime+ partialTick) / 2 % 360;
+            rotation *= -1;
+            GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+
+            up.getModel().render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+
+            GL11.glPopMatrix();
         }
 
         GL11.glPopMatrix();
@@ -58,7 +90,7 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
     }
 
     /**
-     * Sets the transloation for the renderer based on the orientation of the Nexus
+     * Sets the translation for the renderer based on the orientation of the Nexus
      *
      * @param direction Side of block on which the Nexus is sitting.
      * @param x         xCoord
@@ -123,10 +155,12 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
      *
      * @param te Nexus being rendered
      */
-    private void setCoreRotationFromTime(TileEntityTransporter te, float partialTick)
+    private void setRotationFromTime(TileEntityTransporter te, float partialTick, boolean reverse)
     {
         long offsetTime = te.getWorldObj().getTotalWorldTime() + te.getStartingRotation();
-        float rotation = (offsetTime  + partialTick) % 360;
+        float rotation = (offsetTime + partialTick) % 360;
+        if (reverse)
+            rotation *= -1;
         GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
     }
 

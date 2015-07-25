@@ -3,6 +3,7 @@ package com.qkninja.network.block;
 import com.qkninja.network.client.particle.EntityFXSpark;
 import com.qkninja.network.init.ModItems;
 import com.qkninja.network.item.INetworkModCore;
+import com.qkninja.network.item.INexusUpgrade;
 import com.qkninja.network.item.ItemHyperspanner;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
@@ -12,12 +13,14 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -51,24 +54,41 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
         {
             TileEntityTransporter te = (TileEntityTransporter) world.getTileEntity(x, y, z);
 
-            if (entityPlayer.getHeldItem() == null && entityPlayer.isSneaking())
+            if (entityPlayer.getHeldItem() == null)
             {
-                INetworkModCore core = te.getActiveCore();
-                if (core != null)
+                if (entityPlayer.isSneaking())
                 {
-                    if (!entityPlayer.capabilities.isCreativeMode)
-                        entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, core.getItemStack());
-                    te.setActiveCore(null);
+                    INexusUpgrade up = te.removeTopUpgrade();
+                    if (up != null)
+                    {
+                        if (!entityPlayer.capabilities.isCreativeMode)
+                            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, up.getItemStack());
+                    } else
+                    {
+                        INetworkModCore core = te.getActiveCore();
+                        if (core != null)
+                        {
+                            if (!entityPlayer.capabilities.isCreativeMode)
+                                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, core.getItemStack());
+                            te.setActiveCore(null);
+                        }
+                    }
                 }
-            } else if (entityPlayer.getHeldItem() != null && entityPlayer.getHeldItem().getItem() == ModItems.hyperspanner)
+            } else if (entityPlayer.getHeldItem().getItem() == ModItems.hyperspanner)
             {
                 ItemHyperspanner hyperspanner = (ItemHyperspanner) entityPlayer.getHeldItem().getItem();
                 hyperspanner.storeOrLinkCoordinates(world, entityPlayer.getHeldItem(), x, y, z);
                 return true;
-            } else if (entityPlayer.getHeldItem() != null && entityPlayer.getHeldItem().getItem() instanceof INetworkModCore && te.getActiveCore() == null)
+
+            } else if (entityPlayer.getHeldItem().getItem() instanceof INetworkModCore && te.getActiveCore() == null)
             {
                 te.setActiveCore((INetworkModCore) entityPlayer.getHeldItem().getItem());
                 if (!entityPlayer.capabilities.isCreativeMode)
+                    entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
+
+            } else if (entityPlayer.getHeldItem().getItem() instanceof INexusUpgrade)
+            {
+                if (te.addUpgrade((INexusUpgrade) entityPlayer.getHeldItem().getItem()) && !entityPlayer.capabilities.isCreativeMode)
                     entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
             }
         }
@@ -156,6 +176,22 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
             EntityFX spark = new EntityFXSpark(world, spawnX, spawnY, spawnZ, 0, 0, 0, lifespan, 0.5F, true);
             Minecraft.getMinecraft().effectRenderer.addEffect(spark);
         }
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    {
+        ArrayList<ItemStack> drops = super.getDrops(world, x, y, z, metadata, fortune);
+        TileEntityTransporter te = (TileEntityTransporter) world.getTileEntity(x, y, z);
+
+        if (te.getActiveCore() != null)
+            drops.add(te.getActiveCore().getItemStack());
+
+        if (!te.getUpgrades().isEmpty())
+            for (INexusUpgrade upgrade: te.getUpgrades())
+                drops.add(upgrade.getItemStack());
+
+        return drops;
     }
 
     /**

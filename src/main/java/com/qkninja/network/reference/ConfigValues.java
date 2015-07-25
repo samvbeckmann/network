@@ -12,4 +12,5 @@ public class ConfigValues
     public static int difficulty = 1;
     public static boolean debugMode = false; /* No config file value, only set in code */
     public static int sparkSpeedFactor = 10;
+    public static int maxUpgradeNumber = 3;
 }

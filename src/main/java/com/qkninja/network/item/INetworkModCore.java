@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Implement this interface on Items that should act as Nexus Cores.
  *
- * See {@link itemItemCore} for an example implementation.
+ * See {@link ItemItemCore} for an example implementation.
  *
  * @author QKninja
  */
