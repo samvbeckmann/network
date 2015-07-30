@@ -5,6 +5,8 @@ itemGroup.network=Network
 item.network:itemCore.name=Item Core
 item.network:hyperspanner.name=Hyperspanner
 item.network:redLED.name=Red LED Ring
+item.network:blueLED.name=Blue LED Ring
+item.network:greenLED.name=Green LED Ring
 
 # Blocks
 tile.network:transporter.name=Nexus

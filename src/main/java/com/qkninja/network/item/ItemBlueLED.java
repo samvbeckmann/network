@@ -5,34 +5,32 @@ import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 /**
- * Defines the Red LED ring item, used as a speed upgrade.
+ * Defines the Blue LED ring item, used as a 4x distance upgrade.
  *
  * @author QKninja
  */
-public class ItemRedLED extends UpgradeBase
+public class ItemBlueLED extends UpgradeBase
 {
-    public ItemRedLED()
+    public ItemBlueLED()
     {
-        super(Names.Items.RED_LED,
-                new ModelUpgrade(),
-                ResourceLocationHelper.getResourceLocation(Names.Models.RED_LED));
+        super(Names.Items.BLUE_LED,
+              new ModelUpgrade(),
+              ResourceLocationHelper.getResourceLocation(Names.Models.BLUE_LED));
     }
 
     @Override
     public void onAdded(TileEntityTransporter te)
     {
-        te.setDelay(1);
+        te.setConnectionDistance(ConfigValues.maxDistanceSq * 4);
     }
 
     @Override
     public void onRemoved(TileEntityTransporter te)
     {
-        te.setDelay(ConfigValues.transportDelay);
+        te.setConnectionDistance(ConfigValues.maxDistanceSq);
     }
 
     @Override

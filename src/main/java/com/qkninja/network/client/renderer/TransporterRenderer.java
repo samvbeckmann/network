@@ -61,28 +61,31 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
         @SuppressWarnings("unchecked")
         Stack<INexusUpgrade> upgrades = (Stack<INexusUpgrade>) transporter.getUpgrades().clone();
         int numUpgrades = upgrades.size();
-        float totalSpacing = (-1 / (numUpgrades + 1)) / 2;
-        for (int i = 0; i < numUpgrades; i++)
+        if (numUpgrades > 0)
         {
-            GL11.glPushMatrix();
-            INexusUpgrade up = upgrades.pop();
-            texture = up.getTexture();
-            Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-            float yOffset;
-            if (numUpgrades > 1)
-                yOffset = (totalSpacing / 2) - ((totalSpacing / (numUpgrades - 1)) * i);
-            else
-                yOffset = 0;
-            GL11.glTranslatef(0.0F, yOffset, 0);
+            float totalSpacing = (float) ((-1. / numUpgrades) + 1) / 2;
+            for (int i = 0; i < numUpgrades; i++)
+            {
+                GL11.glPushMatrix();
+                INexusUpgrade up = upgrades.pop();
+                texture = up.getTexture();
+                Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+                float yOffset;
+                if (numUpgrades > 1)
+                    yOffset = (totalSpacing / 2) - ((totalSpacing / (numUpgrades - 1)) * i);
+                else
+                    yOffset = 0;
+                GL11.glTranslatef(0.0F, -1 * yOffset, 0);
 
-            long offsetTime = transporter.getWorldObj().getTotalWorldTime() + transporter.getStartingRotation();
-            float rotation = (offsetTime+ partialTick) / 2 % 360;
-            rotation *= -1;
-            GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+                long offsetTime = transporter.getWorldObj().getTotalWorldTime() + transporter.getStartingRotation();
+                float rotation = (offsetTime + partialTick) / 2 % 360;
+                rotation *= -1;
+                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 
-            up.getModel().render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+                up.getModel().render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 
-            GL11.glPopMatrix();
+                GL11.glPopMatrix();
+            }
         }
 
         GL11.glPopMatrix();

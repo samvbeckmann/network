@@ -6,9 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * dilithium-transportation, class made on 2015-07-23
+ * Defines an upgrade to a Nexus.
+ * See {@link ItemRedLED} for an example implementation.
  *
- * @author Sam Beckmann
+ * @author QKninja
  */
 public interface INexusUpgrade
 {

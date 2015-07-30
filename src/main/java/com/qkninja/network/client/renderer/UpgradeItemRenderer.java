@@ -27,13 +27,24 @@ public class UpgradeItemRenderer implements IItemRenderer
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
-        return true;
+        return !type.equals(ItemRenderType.INVENTORY);
     }
 
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
     {
-        return false;
+        if (type.equals(ItemRenderType.ENTITY))
+        {
+            switch (helper)
+            {
+                case ENTITY_BOBBING:
+                case ENTITY_ROTATION:
+                    return true;
+                default:
+                    return false;
+            }
+        } else
+            return false;
     }
 
     @Override
@@ -54,9 +65,9 @@ public class UpgradeItemRenderer implements IItemRenderer
             case EQUIPPED_FIRST_PERSON:
                 GL11.glTranslatef(0.2F, -0.1F, -0.1F);
                 break;
-            case INVENTORY:
-                GL11.glScalef(15.0F, 15.0F, 15.0F);
-                GL11.glTranslatef(0.34F, 0.0F, -0.32F);
+//            case INVENTORY:
+//                GL11.glScalef(15.0F, 15.0F, 15.0F);
+//                GL11.glTranslatef(0.34F, 0.0F, -0.32F);
         }
 
         GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);

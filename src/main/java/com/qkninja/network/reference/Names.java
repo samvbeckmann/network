@@ -12,6 +12,8 @@ public final class Names
         public static final String ITEM_CORE = "itemCore";
         public static final String HYPERSPANNER = "hyperspanner";
         public static final String RED_LED = "redLED";
+        public static final String BLUE_LED = "blueLED";
+        public static final String GREEN_LED = "greenLED";
     }
 
     public static final class Blocks
@@ -54,5 +56,7 @@ public final class Names
         public static final String TRANSPORTER = MODEL_PREFIX + "transporter";
         public static final String CRYSTAL = MODEL_PREFIX + "crystal" + MODEL_SUFFIX;
         public static final String RED_LED = MODEL_PREFIX + "redLED" + MODEL_SUFFIX;
+        public static final String BLUE_LED = MODEL_PREFIX + "blueLED" + MODEL_SUFFIX;
+        public static final String GREEN_LED = MODEL_PREFIX + "greenLED" + MODEL_SUFFIX;
     }
 }

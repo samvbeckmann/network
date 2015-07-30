@@ -1,9 +1,6 @@
 package com.qkninja.network.init;
 
-import com.qkninja.network.item.ItemRedLED;
-import com.qkninja.network.item.ItemItemCore;
-import com.qkninja.network.item.ItemNetwork;
-import com.qkninja.network.item.ItemHyperspanner;
+import com.qkninja.network.item.*;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,6 +16,8 @@ public class ModItems
     public static final ItemNetwork core = new ItemItemCore();
     public static final ItemNetwork hyperspanner = new ItemHyperspanner();
     public static final ItemNetwork redLED = new ItemRedLED();
+    public static final ItemNetwork blueLED = new ItemBlueLED();
+    public static final ItemNetwork greenLED = new ItemGreenLED();
 
 
     public static void init()
@@ -26,5 +25,7 @@ public class ModItems
         GameRegistry.registerItem(core, Names.Items.ITEM_CORE);
         GameRegistry.registerItem(hyperspanner, Names.Items.HYPERSPANNER);
         GameRegistry.registerItem(redLED, Names.Items.RED_LED);
+        GameRegistry.registerItem(blueLED, Names.Items.BLUE_LED);
+        GameRegistry.registerItem(greenLED, Names.Items.GREEN_LED);
     }
 }

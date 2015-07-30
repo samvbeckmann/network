@@ -1,38 +1,34 @@
 package com.qkninja.network.item;
 
 import com.qkninja.network.client.model.ModelUpgrade;
-import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 /**
- * Defines the Red LED ring item, used as a speed upgrade.
+ * Defines the Green LED ring item, used as an efficiency upgrade.
  *
  * @author QKninja
  */
-public class ItemRedLED extends UpgradeBase
+public class ItemGreenLED extends UpgradeBase
 {
-    public ItemRedLED()
+    public ItemGreenLED()
     {
-        super(Names.Items.RED_LED,
+        super(Names.Items.GREEN_LED,
                 new ModelUpgrade(),
-                ResourceLocationHelper.getResourceLocation(Names.Models.RED_LED));
+                ResourceLocationHelper.getResourceLocation(Names.Models.GREEN_LED));
     }
-
     @Override
     public void onAdded(TileEntityTransporter te)
     {
-        te.setDelay(1);
+        // TODO
     }
 
     @Override
     public void onRemoved(TileEntityTransporter te)
     {
-        te.setDelay(ConfigValues.transportDelay);
+        // TODO
     }
 
     @Override
