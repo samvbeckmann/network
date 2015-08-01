@@ -14,6 +14,7 @@ public final class Names
         public static final String RED_LED = "redLED";
         public static final String BLUE_LED = "blueLED";
         public static final String GREEN_LED = "greenLED";
+        public static final String FLUID_CORE = "fluidCore";
     }
 
     public static final class Blocks
@@ -36,6 +37,7 @@ public final class Names
         public static final String DELAY = "delay";
         public static final String MAX_DISTANCE = "maxDistance";
         public static final String UPGRADES = "upgrades";
+        public static final String HIGH_CAPACITY = "highCapacity";
     }
 
     public static final class TileEntities
@@ -58,5 +60,6 @@ public final class Names
         public static final String RED_LED = MODEL_PREFIX + "redLED" + MODEL_SUFFIX;
         public static final String BLUE_LED = MODEL_PREFIX + "blueLED" + MODEL_SUFFIX;
         public static final String GREEN_LED = MODEL_PREFIX + "greenLED" + MODEL_SUFFIX;
+        public static final String FLUID_CRYSTAL = MODEL_PREFIX + "fluidCrystal" + MODEL_SUFFIX;
     }
 }

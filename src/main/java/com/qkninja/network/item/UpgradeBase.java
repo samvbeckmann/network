@@ -3,8 +3,6 @@ package com.qkninja.network.item;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.Random;
-
 /**
  * Generic Nexus upgrade.
  *

@@ -18,6 +18,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.*;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -27,7 +28,7 @@ import java.util.*;
  *
  * @author QKninja
  */
-public class TileEntityTransporter extends TileEntityNetwork implements IInventory
+public class TileEntityTransporter extends TileEntityNetwork implements IInventory, IFluidHandler
 {
     private int counter;
     private ItemStack inventory;
@@ -38,6 +39,8 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     private INetworkModCore activeCore;
     private int delay = ConfigValues.transportDelay;
     private int connectionDistance = ConfigValues.maxDistanceSq;
+    private boolean highCapacity = ConfigValues.highCapacity;
+    private FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
 
     public TileEntityTransporter()
     {
@@ -289,7 +292,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     @Override
     public int getInventoryStackLimit()
     {
-        return 1;
+        return 64;
     }
 
     @Override
@@ -342,6 +345,16 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         this.connectionDistance = connectionDistance;
     }
 
+    public boolean isHighCapacity()
+    {
+        return highCapacity;
+    }
+
+    public void setHighCapacity(boolean highCapacity)
+    {
+        this.highCapacity = highCapacity;
+    }
+
     public Stack<INexusUpgrade> getUpgrades()
     {
         return upgrades;
@@ -391,6 +404,9 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         counter = tag.getShort(Names.NBT.COUNTER);
         this.setDelay(tag.getShort(Names.NBT.DELAY));
         this.setConnectionDistance(tag.getShort(Names.NBT.MAX_DISTANCE));
+        this.setHighCapacity(tag.getBoolean(Names.NBT.HIGH_CAPACITY));
+        tank.writeToNBT(tag);
+
         NBTTagCompound invCompound = (NBTTagCompound) tag.getTag(Names.NBT.ITEMS);
         if (invCompound != null)
             inventory = ItemStack.loadItemStackFromNBT(invCompound);
@@ -409,6 +425,9 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         tag.setShort(Names.NBT.COUNTER, (short) counter);
         tag.setShort(Names.NBT.DELAY, (short) this.getDelay());
         tag.setShort(Names.NBT.MAX_DISTANCE, (short) this.getConnectionDistance());
+        tag.setBoolean(Names.NBT.HIGH_CAPACITY, this.isHighCapacity());
+        tank.writeToNBT(tag);
+
         if (inventory != null)
         {
             NBTTagCompound invCompound = new NBTTagCompound();
@@ -497,6 +516,44 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
         readSyncableData(pkt.func_148857_g());
+    }
+
+    /* IFluidHandler methods */
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    {
+        return tank.fill(resource, doFill);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    {
+        return tank.drain(resource.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    {
+        return tank.drain(maxDrain, doDrain);
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid)
+    {
+        return true;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    {
+        return new FluidTankInfo[] { tank.getInfo()};
     }
 
     /**

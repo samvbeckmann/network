@@ -22,13 +22,13 @@ public class ItemGreenLED extends UpgradeBase
     @Override
     public void onAdded(TileEntityTransporter te)
     {
-        // TODO
+        te.setHighCapacity(true);
     }
 
     @Override
     public void onRemoved(TileEntityTransporter te)
     {
-        // TODO
+        te.setHighCapacity(false);
     }
 
     @Override

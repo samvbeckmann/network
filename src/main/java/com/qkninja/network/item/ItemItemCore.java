@@ -2,6 +2,7 @@ package com.qkninja.network.item;
 
 import com.qkninja.network.client.model.ModelCrystal;
 import com.qkninja.network.handler.DistanceHandler;
+import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
@@ -16,16 +17,21 @@ import net.minecraft.util.ResourceLocation;
 import java.util.Collections;
 
 /**
- * Defines the Core item.
+ * Defines the item transport Core.
  *
  * @author QKninja
  */
 public class ItemItemCore extends ItemNetwork implements INetworkModCore
 {
+    private ResourceLocation texture;
+    private ModelBase model;
+
     public ItemItemCore()
     {
         super();
         setUnlocalizedName(Names.Items.ITEM_CORE);
+        this.texture = ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
+        this.model = new ModelCrystal();
     }
 
     @Override
@@ -36,6 +42,9 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
             TileEntity tile = nexus.getAttachedTileEntity();
             if (tile != null && tile instanceof IInventory)
             {
+                int numberPickup = nexus.isHighCapacity() ?
+                        ConfigValues.highCapacityPickup :
+                        ConfigValues.standardNumberPickup;
                 IInventory inv = (IInventory) tile;
                 if (inv instanceof ISidedInventory)
                 {
@@ -44,7 +53,7 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
                     {
                         if (inv.getStackInSlot(slot) != null)
                         {
-                            nexus.setInventorySlotContents(0, inv.decrStackSize(slot, 1));
+                            nexus.setInventorySlotContents(0, inv.decrStackSize(slot, numberPickup));
                             return;
                         }
                     }
@@ -55,7 +64,7 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
                     {
                         if (inv.getStackInSlot(i) != null)
                         {
-                            nexus.setInventorySlotContents(0, inv.decrStackSize(i, 1));
+                            nexus.setInventorySlotContents(0, inv.decrStackSize(i, numberPickup));
                             return;
                         }
                     }
@@ -74,12 +83,9 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
             if (tile != null && tile instanceof IInventory)
             {
                 IInventory inv = (IInventory) tile;
-                ItemStack remainder = TileEntityHopper.func_145889_a(inv, nexus.getStackInSlot(0), nexus.getBlockMetadata());
-                if (remainder == null)
-                {
-                    nexus.setInventorySlotContents(0, null);
-                    return;
-                }
+                ItemStack remainder = TileEntityHopper.func_145889_a(inv, nexus.getStackInSlot(0),
+                        nexus.getBlockMetadata());
+                nexus.setInventorySlotContents(0, remainder);
             }
         }
         attemptTeleport(nexus);
@@ -100,15 +106,22 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
     @Override
     public ModelBase getModel()
     {
-        return new ModelCrystal();
+        return model;
     }
 
     @Override
     public ResourceLocation getTexture()
     {
-        return ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
+        return texture;
     }
 
+    /**
+     * Attempts t0 move the inventory of a sent nexus
+     * to a connected nexus.
+     *
+     * @param nexus Nexus to move the inventory from
+     * @return if teleport was successful
+     */
     private boolean attemptTeleport(TileEntityTransporter nexus)
     {
         if (nexus.getStackInSlot(0) != null)
@@ -123,7 +136,7 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
                     if (transporter.getStackInSlot(0) == null)
                     {
                         transporter.setInventorySlotContents(0, nexus.getStackInSlot(0));
-                        nexus.decrStackSize(0, 1);
+                        nexus.setInventorySlotContents(0, null);
                         transporter.resetCounter();
                         nexus.resetCounter();
                         return true;

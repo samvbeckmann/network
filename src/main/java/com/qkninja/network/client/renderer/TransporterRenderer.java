@@ -39,7 +39,8 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
 
         GL11.glPushMatrix();
         setTranslationFromDirection(direction, x, y, z);
-        ResourceLocation texture = ResourceLocationHelper.getResourceLocation(Names.Models.TRANSPORTER + transporter.getMode().ordinal() + Names.Models.MODEL_SUFFIX);
+        ResourceLocation texture = ResourceLocationHelper.getResourceLocation(
+                Names.Models.TRANSPORTER + transporter.getMode().ordinal() + Names.Models.MODEL_SUFFIX);
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
         GL11.glPushMatrix();
@@ -174,7 +175,8 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
      */
     private void setCoreTranslationFromTime(TileEntityTransporter te, float partialTick)
     {
-        float translate = (float) Math.sin((te.getWorldObj().getTotalWorldTime() + te.getStartingRotation() + partialTick) * 0.02);
+        float translate = (float) Math.sin(
+                (te.getWorldObj().getTotalWorldTime() + te.getStartingRotation() + partialTick) * 0.02);
         GL11.glTranslatef(0.0F, translate * 0.02F, 0.0F);
     }
 }

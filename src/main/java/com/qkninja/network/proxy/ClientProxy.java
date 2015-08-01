@@ -55,10 +55,14 @@ public class ClientProxy extends CommonProxy
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTransporter.class, new TransporterRenderer());
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.transporter), new TransporterItemRenderer());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.transporter),
+                new TransporterItemRenderer());
 
-        MinecraftForgeClient.registerItemRenderer(ModItems.redLED, new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.RED_LED)));
-        MinecraftForgeClient.registerItemRenderer(ModItems.blueLED, new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.BLUE_LED)));
-        MinecraftForgeClient.registerItemRenderer(ModItems.greenLED, new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.GREEN_LED)));
+        MinecraftForgeClient.registerItemRenderer(ModItems.redLED,
+                new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.RED_LED)));
+        MinecraftForgeClient.registerItemRenderer(ModItems.blueLED,
+                new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.BLUE_LED)));
+        MinecraftForgeClient.registerItemRenderer(ModItems.greenLED,
+                new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.GREEN_LED)));
     }
 }

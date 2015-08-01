@@ -105,31 +105,37 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
         ForgeDirection direction = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
-        float height = hasCore((TileEntityTransporter) world.getTileEntity(x, y, z)) ? CORE_HEIGHT : NEXUS_HEIGHT;
-        AxisAlignedBB bb;
+        TileEntity te = world.getTileEntity(x, y, z);
+        AxisAlignedBB bb = null;
 
-        switch (direction)
+        if (te instanceof TileEntityTransporter) // Should always be true
         {
-            case DOWN:
-                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, 1 - height + y, DISTANCE_FROM_EDGE + z, 1 - DISTANCE_FROM_EDGE + x, 1 + y, 1 - DISTANCE_FROM_EDGE + z);
-                break;
-            case EAST:
-                bb = AxisAlignedBB.getBoundingBox(x, DISTANCE_FROM_EDGE + y, DISTANCE_FROM_EDGE + z, height + x, 1 - DISTANCE_FROM_EDGE + y, 1 - DISTANCE_FROM_EDGE + z);
-                break;
-            case WEST:
-                bb = AxisAlignedBB.getBoundingBox(1 - height + x, DISTANCE_FROM_EDGE + y, DISTANCE_FROM_EDGE + z, 1 + x, 1 - DISTANCE_FROM_EDGE + y, 1 - DISTANCE_FROM_EDGE + z);
-                break;
-            case SOUTH:
-                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, DISTANCE_FROM_EDGE + y, z, 1 - DISTANCE_FROM_EDGE + x, 1 - DISTANCE_FROM_EDGE + y, height + z);
-                break;
-            case NORTH:
-                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, DISTANCE_FROM_EDGE + y, 1 - height + z, 1 - DISTANCE_FROM_EDGE + x, 1 - DISTANCE_FROM_EDGE + y, 1 + z);
-                break;
-            case UP:
-            default:
-                bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, y, DISTANCE_FROM_EDGE + z, 1 - DISTANCE_FROM_EDGE + x, height + y, 1 - DISTANCE_FROM_EDGE + z);
-                break;
+            float height = hasCore((TileEntityTransporter) te) ? CORE_HEIGHT : NEXUS_HEIGHT;
+
+            switch (direction)
+            {
+                case DOWN:
+                    bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, 1 - height + y, DISTANCE_FROM_EDGE + z, 1 - DISTANCE_FROM_EDGE + x, 1 + y, 1 - DISTANCE_FROM_EDGE + z);
+                    break;
+                case EAST:
+                    bb = AxisAlignedBB.getBoundingBox(x, DISTANCE_FROM_EDGE + y, DISTANCE_FROM_EDGE + z, height + x, 1 - DISTANCE_FROM_EDGE + y, 1 - DISTANCE_FROM_EDGE + z);
+                    break;
+                case WEST:
+                    bb = AxisAlignedBB.getBoundingBox(1 - height + x, DISTANCE_FROM_EDGE + y, DISTANCE_FROM_EDGE + z, 1 + x, 1 - DISTANCE_FROM_EDGE + y, 1 - DISTANCE_FROM_EDGE + z);
+                    break;
+                case SOUTH:
+                    bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, DISTANCE_FROM_EDGE + y, z, 1 - DISTANCE_FROM_EDGE + x, 1 - DISTANCE_FROM_EDGE + y, height + z);
+                    break;
+                case NORTH:
+                    bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, DISTANCE_FROM_EDGE + y, 1 - height + z, 1 - DISTANCE_FROM_EDGE + x, 1 - DISTANCE_FROM_EDGE + y, 1 + z);
+                    break;
+                case UP:
+                default:
+                    bb = AxisAlignedBB.getBoundingBox(DISTANCE_FROM_EDGE + x, y, DISTANCE_FROM_EDGE + z, 1 - DISTANCE_FROM_EDGE + x, height + y, 1 - DISTANCE_FROM_EDGE + z);
+                    break;
+            }
         }
+
         return bb;
     }
 
