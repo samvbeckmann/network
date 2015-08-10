@@ -131,6 +131,18 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
         return texture;
     }
 
+    @Override
+    public boolean canHandleItems()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canHandleFluids()
+    {
+        return true;
+    }
+
     private boolean attemptTeleport(TileEntityTransporter nexus, ForgeDirection orientation)
     {
         FluidTankInfo[] tankInfo = nexus.getTankInfo(orientation);
@@ -144,16 +156,19 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
                 if (tile instanceof TileEntityTransporter) // should always be true
                 {
                     TileEntityTransporter transporter = (TileEntityTransporter) tile;
-                    FluidStack transporterFluid = transporter.getTankInfo(orientation)[0].fluid;
-                    if (transporterFluid == null || transporterFluid.containsFluid(nexusFluid))
+                    if (transporter.getActiveCore() != null && transporter.getActiveCore().canHandleFluids())
                     {
-                        FluidStack toFill = new FluidStack(nexusFluid.getFluid(), Math.min(nexusFluid.amount, 100));
-                        int filled = transporter.fill(orientation, toFill, true);
-                        nexus.drain(orientation, filled, true);
-                        if (filled > 0)
+                        FluidStack transporterFluid = transporter.getTankInfo(orientation)[0].fluid;
+                        if (transporterFluid == null || transporterFluid.containsFluid(nexusFluid))
                         {
-                            transporter.resetCounter();
-                            nexus.resetCounter();
+                            FluidStack toFill = new FluidStack(nexusFluid.getFluid(), Math.min(nexusFluid.amount, 100));
+                            int filled = transporter.fill(orientation, toFill, true);
+                            nexus.drain(orientation, filled, true);
+                            if (filled > 0)
+                            {
+                                transporter.resetCounter();
+                                nexus.resetCounter();
+                            }
                         }
                     }
                 }

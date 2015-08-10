@@ -115,6 +115,18 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
         return texture;
     }
 
+    @Override
+    public boolean canHandleItems()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean canHandleFluids()
+    {
+        return false;
+    }
+
     /**
      * Attempts to move the inventory of a sent nexus
      * to a connected nexus.
@@ -133,7 +145,8 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
                 if (tile instanceof TileEntityTransporter) // Should always be true
                 {
                     TileEntityTransporter transporter = (TileEntityTransporter) tile;
-                    if (transporter.getStackInSlot(0) == null)
+                    if (transporter.getActiveCore() != null && transporter.getActiveCore().canHandleItems() &&
+                            transporter.getStackInSlot(0) == null)
                     {
                         transporter.setInventorySlotContents(0, nexus.getStackInSlot(0));
                         nexus.setInventorySlotContents(0, null);

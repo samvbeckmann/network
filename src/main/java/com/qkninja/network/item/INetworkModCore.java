@@ -55,4 +55,14 @@ public interface INetworkModCore
      * @return texture that should be bound to the model.
      */
     ResourceLocation getTexture();
+
+    /**
+     * @return if items should be allowed to be transported to a nexus with this core.
+     */
+    boolean canHandleItems();
+
+    /**
+     * @return if fluids should be allowed to be transported to a nexus with this core.
+     */
+    boolean canHandleFluids();
 }
