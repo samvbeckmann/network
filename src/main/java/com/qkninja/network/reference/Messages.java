@@ -41,6 +41,7 @@ public final class Messages
 
         public static final String WAILA_MODE = PREFIX + "mode";
         public static final String WAILA_INVENTORY = PREFIX + "inventory";
+        public static final String WAILA_FLUID = PREFIX + "fluid";
     }
 
     public static final class Strings

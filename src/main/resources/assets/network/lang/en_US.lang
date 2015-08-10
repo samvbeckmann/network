@@ -3,6 +3,7 @@ itemGroup.network=Network
 
 # Items
 item.network:itemCore.name=Item Core
+item.network:fluidCore.name=Fluid Core
 item.network:hyperspanner.name=Hyperspanner
 item.network:redLED.name=Red LED Ring
 item.network:blueLED.name=Blue LED Ring
@@ -20,6 +21,7 @@ network.tooltips.twoway=Two-Way
 # Waila
 network.waila.mode=Mode: %s
 network.waila.inventory=Item: %s
+network.waila.fluid=Fluid: %dmB %s
 
 # Mod Strings
 network.mode_neutral=Neutral
