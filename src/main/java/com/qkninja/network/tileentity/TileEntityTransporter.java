@@ -405,7 +405,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         this.setDelay(tag.getShort(Names.NBT.DELAY));
         this.setConnectionDistance(tag.getShort(Names.NBT.MAX_DISTANCE));
         this.setHighCapacity(tag.getBoolean(Names.NBT.HIGH_CAPACITY));
-        tank.writeToNBT(tag);
+        tank.readFromNBT(tag);
 
         NBTTagCompound invCompound = (NBTTagCompound) tag.getTag(Names.NBT.ITEMS);
         if (invCompound != null)

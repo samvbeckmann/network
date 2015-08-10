@@ -30,7 +30,7 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
     {
         super();
         setUnlocalizedName(Names.Items.ITEM_CORE);
-        this.texture = ResourceLocationHelper.getResourceLocation(Names.Models.CRYSTAL);
+        this.texture = ResourceLocationHelper.getResourceLocation(Names.Models.ITEM_CRYSTAL);
         this.model = new ModelCrystal();
     }
 
@@ -116,7 +116,7 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
     }
 
     /**
-     * Attempts t0 move the inventory of a sent nexus
+     * Attempts to move the inventory of a sent nexus
      * to a connected nexus.
      *
      * @param nexus Nexus to move the inventory from

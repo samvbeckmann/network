@@ -17,21 +17,21 @@ public interface INetworkModCore
     /**
      * Called when the Nexus is ready to perform an operation in import mode.
      *
-     * @param nexus The Nexus to which this core is bound.
+     * @param nexus The Nexus to which this itemCore is bound.
      */
     void onNexusImportCall(TileEntityTransporter nexus);
 
     /**
      * Called when the Nexus is ready to perform an operation in export mode.
      *
-     * @param nexus The Nexus to which this core is bound.
+     * @param nexus The Nexus to which this itemCore is bound.
      */
     void onNexusExportCall(TileEntityTransporter nexus);
 
     /**
      * Called when the Nexus is ready to perform an operation in neutral mode.
      *
-     * @param nexus The Nexus to which this core is bound.
+     * @param nexus The Nexus to which this itemCore is bound.
      */
     void onNexusNeutralCall(TileEntityTransporter nexus);
 
@@ -41,16 +41,16 @@ public interface INetworkModCore
     ItemStack getItemStack();
 
     /**
-     * Used to get the model that should be rendered when this core is active.
-     * Called on render of a Nexus containing this core.
+     * Used to get the model that should be rendered when this itemCore is active.
+     * Called on render of a Nexus containing this itemCore.
      *
      * @return model that should be rendered
      */
     ModelBase getModel();
 
     /**
-     * Used to get the texture that should be rendered when this core is active.
-     * Called on render of a Nexus containing this core.
+     * Used to get the texture that should be rendered when this itemCore is active.
+     * Called on render of a Nexus containing this itemCore.
      *
      * @return texture that should be bound to the model.
      */

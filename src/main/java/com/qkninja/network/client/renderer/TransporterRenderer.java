@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Stack;
 
 /**
- * Renderer for the transporter block and the attached core.
+ * Renderer for the transporter block and the attached itemCore.
  *
  * @author QKninja
  */
@@ -29,7 +29,7 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
     }
 
     /**
-     * Renders both the nexus frame and whatever core is attached.
+     * Renders both the nexus frame and whatever itemCore is attached.
      */
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick)
     {
@@ -155,7 +155,7 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
     }
 
     /**
-     * Sets the rotation of core, which depends upon the current world time.
+     * Sets the rotation of itemCore, which depends upon the current world time.
      *
      * @param te Nexus being rendered
      */
@@ -169,7 +169,7 @@ public class TransporterRenderer extends TileEntitySpecialRenderer
     }
 
     /**
-     * Sets the translation of the core, which depends upon the current world time.
+     * Sets the translation of the itemCore, which depends upon the current world time.
      *
      * @param te Nexus being rendered
      */

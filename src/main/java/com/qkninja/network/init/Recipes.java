@@ -18,39 +18,40 @@ public class Recipes
         switch (ConfigValues.difficulty)
         {
             case 0:
-                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.core, 3),
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCore, 3),
                         " i ", "idi", " i",
                         'i', new ItemStack(Blocks.iron_bars),
                         'd', "gemDiamond"));
                 GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.transporter),
                         "   ", " c ", "iri",
-                        'c', new ItemStack(ModItems.core),
+                        'c', new ItemStack(ModItems.itemCore),
                         'i', "ingotIron",
                         'r', "dustRedstone"));
                 break;
             case 1:
-                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.core),
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCore),
                         " i ", "idi", " i ",
                         'i', new ItemStack(Blocks.iron_bars),
                         'd', "gemDiamond"));
                 GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.transporter),
                         "   ", " c ", "iri",
-                        'c', new ItemStack(ModItems.core),
+                        'c', new ItemStack(ModItems.itemCore),
                         'i', "blockIron",
                         'r', "blockRedstone"));
                 break;
             case 2:
-                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.core),
+                GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.itemCore),
                         " i ", "idi", " i",
                         'i', new ItemStack(Blocks.iron_bars),
                         'd', "blockDiamond"));
                 GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.transporter),
                         "   ", " c ", "iri",
-                        'c', new ItemStack(ModItems.core),
+                        'c', new ItemStack(ModItems.itemCore),
                         'i', "blockIron",
                         'r', "blockRedstone"));
                 break;
         }
+        String glowstone = ConfigValues.difficulty == 2 ? "blockGlowstone" : "dustGlowstone";
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.hyperspanner),
                 "igi", "ili", "iri",
@@ -58,5 +59,24 @@ public class Recipes
                 'g', "dustGlowstone",
                 'l', "paneGlass",
                 'r', "dustRedstone"));
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.blueLED),
+                " l ", " d ", "igi",
+                'l', "paneGlass",
+                'd', "gemDiamond",
+                'i', "ingotIron",
+                'g', glowstone));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.redLED),
+                " l ", " d ", "igi",
+                'l', "paneGlass",
+                'd', "ingotGold",
+                'i', "ingotIron",
+                'g', glowstone));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.greenLED),
+                " l ", " d ", "igi",
+                'l', "paneGlass",
+                'd', "slimeball",
+                'i', "ingotIron",
+                'g', glowstone));
     }
 }

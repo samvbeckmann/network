@@ -32,7 +32,7 @@ public final class Names
         public static final String DISTANCE = "distance";
         public static final String LOCATIONS = "locations";
         public static final String MODE = "mode";
-        public static final String CORE = "core";
+        public static final String CORE = "itemCore";
         public static final String ITEMS = "items";
         public static final String DELAY = "delay";
         public static final String MAX_DISTANCE = "maxDistance";
@@ -56,7 +56,7 @@ public final class Names
         public static final String MODEL_SUFFIX = ".png";
 
         public static final String TRANSPORTER = MODEL_PREFIX + "transporter";
-        public static final String CRYSTAL = MODEL_PREFIX + "crystal" + MODEL_SUFFIX;
+        public static final String ITEM_CRYSTAL = MODEL_PREFIX + "itemCrystal" + MODEL_SUFFIX;
         public static final String RED_LED = MODEL_PREFIX + "redLED" + MODEL_SUFFIX;
         public static final String BLUE_LED = MODEL_PREFIX + "blueLED" + MODEL_SUFFIX;
         public static final String GREEN_LED = MODEL_PREFIX + "greenLED" + MODEL_SUFFIX;
