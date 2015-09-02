@@ -8,14 +8,14 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 /**
- * dilithium-transportation, class made on 2015-07-24
+ * ItemRenderer for various upgrades
  *
- * @author Sam Beckmann
+ * @author QK ninja
  */
 public class UpgradeItemRenderer implements IItemRenderer
 {
     protected ModelUpgrade model;
-    ResourceLocation texture;
+    protected ResourceLocation texture;
 
     public UpgradeItemRenderer(ResourceLocation texture)
     {
@@ -52,7 +52,7 @@ public class UpgradeItemRenderer implements IItemRenderer
     {
         GL11.glPushMatrix();
         GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(-0.05F, 1.6F, -0.32F);
+        GL11.glTranslatef(-0.05F, 1.6F, -0.12F);
         GL11.glScalef(1.6F, 1.6F, 1.6F);
 
         switch (type)
@@ -65,6 +65,7 @@ public class UpgradeItemRenderer implements IItemRenderer
             case EQUIPPED_FIRST_PERSON:
                 GL11.glTranslatef(0.2F, -0.1F, -0.1F);
                 break;
+            /* TODO deprecated, to be removed when textures added */
 //            case INVENTORY:
 //                GL11.glScalef(15.0F, 15.0F, 15.0F);
 //                GL11.glTranslatef(0.34F, 0.0F, -0.32F);

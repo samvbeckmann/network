@@ -6,8 +6,11 @@ import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
 
 /**
  * Defines the Red LED ring item, used as a speed upgrade.
@@ -39,5 +42,12 @@ public class ItemRedLED extends UpgradeBase
     public ItemStack getItemStack()
     {
         return new ItemStack(this);
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean p_77624_4_)
+    {
+        list.add("Increases Nexus"); // TODO Localize Text
+        list.add("Speed");
     }
 }

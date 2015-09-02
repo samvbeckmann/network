@@ -1,9 +1,6 @@
 package com.qkninja.network.proxy;
 
-import com.qkninja.network.client.renderer.LineRenderer;
-import com.qkninja.network.client.renderer.TransporterItemRenderer;
-import com.qkninja.network.client.renderer.TransporterRenderer;
-import com.qkninja.network.client.renderer.UpgradeItemRenderer;
+import com.qkninja.network.client.renderer.*;
 import com.qkninja.network.init.ModBlocks;
 import com.qkninja.network.init.ModItems;
 import com.qkninja.network.reference.Names;
@@ -64,5 +61,9 @@ public class ClientProxy extends CommonProxy
                 new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.BLUE_LED)));
         MinecraftForgeClient.registerItemRenderer(ModItems.greenLED,
                 new UpgradeItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.GREEN_LED)));
+        MinecraftForgeClient.registerItemRenderer(ModItems.itemCore,
+                new CoreItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.ITEM_CRYSTAL)));
+        MinecraftForgeClient.registerItemRenderer(ModItems.fluidCore,
+                new CoreItemRenderer(ResourceLocationHelper.getResourceLocation(Names.Models.FLUID_CRYSTAL)));
     }
 }
