@@ -1,6 +1,6 @@
 # Network: Transport Made Simple
 ### What is it?
-Network is a modification for the game Minecraft that handles item transport.
+*Network* is a modification for the game Minecraft that handles item transport.
 ### Philosophy
 *Network* has a simple philosophy: You shouldn't need to advance down complicated tech trees to accomplish basic tasks.  
 *Network* also strives to accomplish it's tasks beautifully, in order to make playing Minecraft a pleasure!
