@@ -10,6 +10,6 @@ I welcome pull requests, especially bug fixes! If you feel so inclined to add a 
 The author of *Network* is Sam Beckmann (also known as QKninja).  
 *Network* is licensed under the [MIT license](http://opensource.org/licenses/MIT). See the LICENSE file for more details.
 
-**Modpack Policy:** *Network* May by used in any modpack, public or private, without my explicit permission. You are required to remove *Network* from your modpack at my request.
+**Modpack Policy:** *Network* may by used in any modpack, public or private, without my explicit permission. You are required to remove *Network* from your modpack at my request.
 ### Credits
 Additional texture work done by AbnormalAndroid.
