@@ -39,7 +39,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     private INetworkModCore activeCore;
     private int delay = ConfigValues.transportDelay;
     private int connectionDistance = ConfigValues.maxDistanceSq;
-    private boolean highCapacity = ConfigValues.highCapacity;
+    private boolean highCapacity = false;
     private FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
 
     public TileEntityTransporter()
