@@ -18,6 +18,10 @@ public final class Messages
         public static final String HAS_DATA = PREFIX + "hasdata";
         public static final String ONE_WAY = PREFIX + "oneway";
         public static final String TWO_WAY = PREFIX + "twoway";
+        public static final String UPGRADE = PREFIX + "upgrade";
+        public static final String RANGE = PREFIX + "range";
+        public static final String SPEED = PREFIX + "speed";
+        public static final String CAPACITY = PREFIX + "capacity";
     }
 
     public static final class Configuration // TODO: De-Localize

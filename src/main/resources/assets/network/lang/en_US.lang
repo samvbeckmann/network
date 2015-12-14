@@ -17,6 +17,10 @@ network.tooltips.mode=Mode: %s
 network.tooltips.hasdata=<<Has Data>>
 network.tooltips.oneway=One-Way
 network.tooltips.twoway=Two-Way
+network.tooltips.upgrade=Increases Nexus
+network.tooltips.range=Range
+network.tooltips.speed=Speed
+network.tooltips.capacity=Capacity
 
 # Waila
 network.waila.mode=Mode: %s

@@ -16,6 +16,7 @@ public class ModGuiConfig extends GuiConfig
 {
     public ModGuiConfig(GuiScreen guiScreen)
     {
+        //noinspection unchecked
         super(guiScreen,
                 new ConfigElement(ConfigurationHandler.configuration.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
                 Reference.MOD_ID,

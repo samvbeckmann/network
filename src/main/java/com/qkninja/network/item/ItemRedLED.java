@@ -2,10 +2,12 @@ package com.qkninja.network.item;
 
 import com.qkninja.network.client.model.ModelUpgrade;
 import com.qkninja.network.reference.ConfigValues;
+import com.qkninja.network.reference.Messages;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -44,10 +46,11 @@ public class ItemRedLED extends UpgradeBase
         return new ItemStack(this);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean p_77624_4_)
     {
-        list.add("Increases Nexus"); // TODO Localize Text
-        list.add("Speed");
+        list.add(I18n.format(Messages.Tooltips.UPGRADE));
+        list.add(I18n.format(Messages.Tooltips.SPEED));
     }
 }

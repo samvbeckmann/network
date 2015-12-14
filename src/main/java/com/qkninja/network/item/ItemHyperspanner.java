@@ -89,6 +89,7 @@ public class ItemHyperspanner extends ItemNetwork
         return itemStack;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4)
     {
