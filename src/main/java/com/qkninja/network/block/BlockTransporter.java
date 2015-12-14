@@ -9,9 +9,11 @@ import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +39,8 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     public BlockTransporter()
     {
         super();
-        setBlockName(Names.Blocks.TRANSPORTER);
+        this.setBlockName(Names.Blocks.TRANSPORTER);
+        this.setHardness(2.0F);
         this.setLightLevel(0.5F);
     }
 
@@ -185,19 +188,24 @@ public class BlockTransporter extends BlockNetwork implements ITileEntityProvide
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta)
     {
-        ArrayList<ItemStack> drops = super.getDrops(world, x, y, z, metadata, fortune);
         TileEntityTransporter te = (TileEntityTransporter) world.getTileEntity(x, y, z);
 
         if (te.getActiveCore() != null)
-            drops.add(te.getActiveCore().getItemStack());
+        {
+            EntityItem core = new EntityItem(world, x, y, z, te.getActiveCore().getItemStack());
+            world.spawnEntityInWorld(core);
+        }
 
         if (!te.getUpgrades().isEmpty())
             for (INexusUpgrade upgrade: te.getUpgrades())
-                drops.add(upgrade.getItemStack());
+            {
+                EntityItem entityItem = new EntityItem(world, x, y, z, upgrade.getItemStack());
+                world.spawnEntityInWorld(entityItem);
+            }
 
-        return drops;
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
     /**
