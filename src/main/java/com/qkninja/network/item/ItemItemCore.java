@@ -43,8 +43,8 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
             if (tile != null && tile instanceof IInventory)
             {
                 int numberPickup = nexus.isHighCapacity() ?
-                        ConfigValues.highCapacityPickup :
-                        ConfigValues.standardNumberPickup;
+                        ConfigValues.highCapacityItemPickup :
+                        ConfigValues.standardNumberItemPickup;
                 IInventory inv = (IInventory) tile;
                 if (inv instanceof ISidedInventory)
                 {

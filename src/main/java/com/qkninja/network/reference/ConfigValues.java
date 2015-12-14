@@ -14,6 +14,8 @@ public class ConfigValues
     public static int sparkSpeedFactor = 10;
     public static int maxUpgradeNumber = 3;
     public static boolean highCapacity = false;
-    public static int standardNumberPickup = 1;
-    public static int highCapacityPickup = 64;
+    public static int standardNumberItemPickup = 1;
+    public static int highCapacityItemPickup = 64;
+    public static int standardFluidPickup = 100;
+    public static int highCapacityFluidPickup = 1000;
 }

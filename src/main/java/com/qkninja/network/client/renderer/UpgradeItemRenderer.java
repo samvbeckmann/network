@@ -27,7 +27,7 @@ public class UpgradeItemRenderer implements IItemRenderer
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type)
     {
-        return !type.equals(ItemRenderType.INVENTORY);
+        return true; /* !type.equals(ItemRenderType.INVENTORY); */
     }
 
     @Override
@@ -65,10 +65,11 @@ public class UpgradeItemRenderer implements IItemRenderer
             case EQUIPPED_FIRST_PERSON:
                 GL11.glTranslatef(0.2F, -0.1F, -0.1F);
                 break;
-            /* TODO deprecated, to be removed when textures added */
-//            case INVENTORY:
-//                GL11.glScalef(15.0F, 15.0F, 15.0F);
-//                GL11.glTranslatef(0.34F, 0.0F, -0.32F);
+            /* TODO Possibly update with baked texture? */
+            case INVENTORY:
+                GL11.glScalef(15.0F, 15.0F, 15.0F);
+                GL11.glTranslatef(0.34F, 0.0F, 0.6F);
+                GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
         }
 
         GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);

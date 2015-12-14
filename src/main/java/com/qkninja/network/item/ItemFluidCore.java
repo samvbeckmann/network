@@ -2,6 +2,7 @@ package com.qkninja.network.item;
 
 import com.qkninja.network.client.model.ModelCrystal;
 import com.qkninja.network.handler.DistanceHandler;
+import com.qkninja.network.reference.ConfigValues;
 import com.qkninja.network.reference.Names;
 import com.qkninja.network.tileentity.TileEntityTransporter;
 import com.qkninja.network.utility.ResourceLocationHelper;
@@ -38,12 +39,12 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
     public void onNexusImportCall(TileEntityTransporter nexus)
     {
         TileEntity tile = nexus.getAttachedTileEntity();
+        ForgeDirection nexusOrientation = ForgeDirection.getOrientation(nexus.getBlockMetadata());
 
         if (tile != null && tile instanceof IFluidHandler)
         {
             IFluidHandler inv = (IFluidHandler) tile;
 
-            ForgeDirection nexusOrientation = ForgeDirection.getOrientation(nexus.getBlockMetadata());
             FluidTankInfo[] tankInfo = nexus.getTankInfo(nexusOrientation);
             FluidStack nexusFluid = tankInfo[0].fluid;
 
@@ -51,14 +52,18 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
 
             if (nexusFluid == null) // no fluid
             {
-                drained = inv.drain(nexusOrientation, 100, true);
+                drained = inv.drain(nexusOrientation, nexus.isHighCapacity() ?
+                        ConfigValues.highCapacityFluidPickup :
+                        ConfigValues.standardFluidPickup, true);
 
             } else // has fluid
             {
                 int remainingSpace = tankInfo[0].capacity - nexusFluid.amount;
                 if (remainingSpace != 0)
                 {
-                    int toDrain = Math.min(remainingSpace, 100);
+                    int toDrain = Math.min(remainingSpace, nexus.isHighCapacity() ?
+                            ConfigValues.highCapacityFluidPickup :
+                            ConfigValues.standardFluidPickup);
                     drained = inv.drain(nexusOrientation, new FluidStack(nexusFluid.getFluid(), toDrain), true);
                 }
             }
@@ -69,11 +74,9 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
                 nexus.resetCounter();
                 return;
             }
-
-            attemptTeleport(nexus, nexusOrientation);
-
         }
 
+        attemptTeleport(nexus, nexusOrientation);
 
     }
 
@@ -92,7 +95,10 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
                 IFluidHandler inv = (IFluidHandler) tile;
                 if (inv.canFill(nexusOrientation, nexusFluid.getFluid()))
                 {
-                    FluidStack toFill = new FluidStack(nexusFluid.getFluid(), Math.min(nexusFluid.amount, 100));
+                    FluidStack toFill = new FluidStack(nexusFluid.getFluid(), Math.min(nexusFluid.amount,
+                            nexus.isHighCapacity() ?
+                                    ConfigValues.highCapacityFluidPickup :
+                                    ConfigValues.standardFluidPickup));
                     int filled = inv.fill(nexusOrientation, toFill, true);
                     nexus.drain(nexusOrientation, filled, true);
 
@@ -161,7 +167,10 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
                         FluidStack transporterFluid = transporter.getTankInfo(orientation)[0].fluid;
                         if (transporterFluid == null || transporterFluid.containsFluid(nexusFluid))
                         {
-                            FluidStack toFill = new FluidStack(nexusFluid.getFluid(), Math.min(nexusFluid.amount, 100));
+                            FluidStack toFill = new FluidStack(nexusFluid.getFluid(), Math.min(nexusFluid.amount,
+                                    nexus.isHighCapacity() ?
+                                            ConfigValues.highCapacityFluidPickup :
+                                            ConfigValues.standardFluidPickup));
                             int filled = transporter.fill(orientation, toFill, true);
                             nexus.drain(orientation, filled, true);
                             if (filled > 0)
@@ -176,4 +185,5 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
         }
         return false;
     }
+
 }
