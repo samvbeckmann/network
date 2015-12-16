@@ -92,7 +92,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             tempLocs = exportLocations.toArray(tempLocs);
 
             if (tempLocs.length > 0)
-                ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
+                if (worldObj.isRemote) ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
         }
     }
 
