@@ -86,13 +86,13 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
                         break;
                 }
             }
-        } else if (worldObj.getTotalWorldTime() % 20 == 0)
+        } else if (worldObj.isRemote && worldObj.getTotalWorldTime() % 20 == 0)
         {
             DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
             tempLocs = exportLocations.toArray(tempLocs);
 
             if (tempLocs.length > 0)
-                if (worldObj.isRemote) ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
+                ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
         }
     }
 
