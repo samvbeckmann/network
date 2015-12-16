@@ -129,6 +129,12 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
         return false;
     }
 
+    @Override
+    public boolean overridesRedstone()
+    {
+        return false;
+    }
+
     /**
      * Attempts to move the inventory of a sent nexus
      * to a connected nexus.

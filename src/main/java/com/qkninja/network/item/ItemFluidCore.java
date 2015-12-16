@@ -149,6 +149,12 @@ public class ItemFluidCore extends ItemNetwork implements INetworkModCore
         return true;
     }
 
+    @Override
+    public boolean overridesRedstone()
+    {
+        return false;
+    }
+
     private boolean attemptTeleport(TileEntityTransporter nexus, ForgeDirection orientation)
     {
         FluidTankInfo[] tankInfo = nexus.getTankInfo(orientation);

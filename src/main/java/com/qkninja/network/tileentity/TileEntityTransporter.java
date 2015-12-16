@@ -52,7 +52,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
     {
         if (counter < delay) counter++;
 
-        if (counter >= delay)
+        if (worldObj.getTotalWorldTime() % 20 == 0)
         {
             DistanceHandler[] tempLocs = new DistanceHandler[exportLocations.size()];
             tempLocs = exportLocations.toArray(tempLocs);
@@ -71,7 +71,7 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
         if (!worldObj.isRemote && activeCore != null)
         {
 
-            if (counter >= delay)
+            if (counter >= delay  && redstonePermitted())
             {
                 switch (mode)
                 {
@@ -94,6 +94,15 @@ public class TileEntityTransporter extends TileEntityNetwork implements IInvento
             if (tempLocs.length > 0)
                 ParticleHelper.spawnSpark(worldObj, xCoord, yCoord, zCoord, tempLocs);
         }
+    }
+
+    /**
+     * @return if the current Redstone into the block allows it to perform operations.
+     */
+    private boolean redstonePermitted()
+    {
+        return activeCore != null && activeCore.overridesRedstone() ||
+                !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
     }
 
 

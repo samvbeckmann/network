@@ -65,4 +65,11 @@ public interface INetworkModCore
      * @return if fluids should be allowed to be transported to a nexus with this core.
      */
     boolean canHandleFluids();
+
+    /**
+     * @return if the core overrides redstone inputs to the Nexus.
+     * Returning true will prevent the Nexus from being turned off when receiving a
+     * redstone signal when this core is active in a Nexus.
+     */
+    boolean overridesRedstone();
 }
