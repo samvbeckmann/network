@@ -51,9 +51,10 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
                     ISidedInventory sided = (ISidedInventory) inv;
                     for (int slot : sided.getAccessibleSlotsFromSide(nexus.getBlockMetadata()))
                     {
-                        if (inv.getStackInSlot(slot) != null)
+                        ItemStack slotStack = sided.getStackInSlot(slot);
+                        if (slotStack != null && slotStack.stackSize > 0 && sided.canExtractItem(slot, slotStack, nexus.getBlockMetadata()))
                         {
-                            nexus.setInventorySlotContents(0, inv.decrStackSize(slot, numberPickup));
+                            nexus.setInventorySlotContents(0, sided.decrStackSize(slot, numberPickup));
                             return;
                         }
                     }
@@ -62,7 +63,8 @@ public class ItemItemCore extends ItemNetwork implements INetworkModCore
                 {
                     for (int i = 0; i < inv.getSizeInventory(); i++)
                     {
-                        if (inv.getStackInSlot(i) != null)
+                        ItemStack slotStack = inv.getStackInSlot(i);
+                        if (slotStack != null && slotStack.stackSize > 0)
                         {
                             nexus.setInventorySlotContents(0, inv.decrStackSize(i, numberPickup));
                             return;
